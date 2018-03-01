@@ -1,120 +1,284 @@
-%%%%%%%% Sets order of conditions based on subject number %%%%%%%%%%
-%%%%%%%%%%% 0 = Neutral, 1 = Positive, 3 = Negative %%%%%%%%%%%%%
-%% Condition 1
+% Sets order of conditions based on subject number 
 
-if mod(sub_num,6) == 0
+%% Condition 1 
 
-  stim = 0;
-  %practice
-  for ri = 1:nruns
-    trial = ri + (2*nruns);
-    one_back
-  end
-  stim = 1;
-  for ri = 1:nruns
-    trial = ri + (3*nruns);
-    one_back
-  end
-  stim = 2;
-  for ri = 1:nruns
-    trial = ri + (4*nruns);
-    one_back
-  end
-
-
-
-%%% Condition 2
-elseif mod(sub_num,5) == 0
-    stim = 0;
+if mod(sub_num,6) == 0 
+    stim = 0; % 0 = intact, 1 = degraded
+    zero_back_practice
+    for ri = 1:nruns 
+        trial = ri;
+        zero_back
+    end 
+    stim = 1; 
     for ri = 1:nruns
-      trial = ri;
-      one_back
+        trial = ri + nruns;
+        zero_back
+    end 
+    
+    %Transition screens to notify experimenter 
+    transition
+    
+    %Move on to next task
+    stim = 0;
+    one_back_practice 
+    for ri = 1:nruns
+        trial = ri + (2*nruns);
+        one_back 
+    end 
+    stim = 1; 
+    for ri = 1:nruns
+        trial = ri + (3*nruns);
+        one_back 
+    end 
+    
+    %Transition once more 
+    transition
+    
+    % Final task
+    stim = 0;
+    two_back_practice
+    for ri = 1:nruns
+        trial = ri + (4*nruns);
+        two_back 
     end
     stim = 1;
     for ri = 1:nruns
-      trial = ri + nruns;
-      one_back
-    end
-    stim = 2;
+        trial = ri + (5*nruns);
+        two_back 
+    end  
+  
+%% Condition two
+elseif mod(sub_num,5) == 0 
+    stim = 0;
+    one_back_practice
     for ri = 1:nruns
-      trial = ri + 2*nruns;
-      one_back
+        trial = ri;
+        one_back
+    end 
+    stim = 1;
+    for ri = 1:nruns
+        trial = ri + nruns;
+        one_back
+    end 
+    
+    %Transition screens to notify experimenter 
+    transition
+    
+    %Move on to next task
+    stim = 0;
+    two_back_practice 
+    for ri = 1:nruns
+        trial = ri + (2*nruns);
+        two_back 
+    end 
+    stim = 1;
+    for ri = 1:nruns
+        trial = ri + (3*nruns);
+        two_back 
+    end 
+    
+    %Transition once more 
+    transition
+    
+    % Final task
+    stim = 0;
+    zero_back_practice
+    for ri = 1:nruns
+        trial = ri + (4*nruns);
+        zero_back 
     end
+    stim = 1; 
+    for ri = 1:nruns
+        trial = ri + (5*nruns);
+        zero_back 
+    end 
+    
+ 
+ %% Condition 3
+elseif mod(sub_num,4) == 0 
+    stim = 0; %0 = intact, 1 = degraded
+    two_back_practice
+    for ri = 1:nruns
+        trial = ri;
+        two_back
+    end 
+    stim = 1;
+    for ri = 1:nruns
+        trial = ri + nruns;
+        two_back
+    end 
+    
+    %Transition screens to notify experimenter 
+    transition
+    
+    %Move on to next task
+    stim = 0;
+    zero_back_practice 
+    for ri = 1:nruns
+        trial = ri + (2*nruns);
+        zero_back 
+    end 
+    stim = 1;
+    for ri = 1:nruns
+        trial = ri + (3*nruns);
+        zero_back 
+    end 
+    
+    %Transition once more 
+    transition
+    
+    % Final task
+    stim = 0;
+    one_back_practice
+    for ri = 1:nruns
+        trial = ri + (4*nruns);
+        one_back 
+    end
+    stim = 1; 
+    for ri = 1:nruns
+        trial = ri + (5*nruns);
+        one_back 
+    end 
+ 
+ 
+    %% Condition 4 
+    
+elseif mod(sub_num,3) == 0 
+    stim = 1;
+    zero_back_practice
+    for ri = 1:nruns
+        trial = ri;
+        zero_back
+    end 
+    stim = 0;
+    for ri = 1:nruns
+        trial = ri + nruns;
+        zero_back
+    end 
+    
+    %Transition screens to notify experimenter 
+    transition
+    
+    %Move on to next task
+    stim = 1;
+    two_back_practice 
+    for ri = 1:nruns
+        trial = ri + (2*nruns);
+        two_back 
+    end 
+    stim = 0;
+    for ri = 1:nruns
+        trial = ri + (3*nruns);
+        two_back 
+    end 
+    
+    %Transition once more 
+    transition
+    
+    % Final task
+    stim = 1;
+    one_back_practice
+    for ri = 1:nruns
+        trial = ri + (4*nruns);
+        one_back 
+    end
+    stim = 0; 
+    for ri = 1:nruns
+        trial = ri + (5*nruns);
+        one_back 
+    end 
 
-%%% Condition 3
-elseif mod(sub_num,4) == 0
-  stim = 0;
-  %practice
-  for ri = 1:nruns
-      trial = ri + (4*nruns);
-      one_back
-  end
-  stim = 1;
-  for ri = 1:nruns
-      trial = ri + (5*nruns);
-      one_back
-  end
-  stim = 2;
-  for ri = 1:nruns
-      trial = ri + (6*nruns);
-      one_back
-  end
-
-%%% Condition 4
-elseif mod(sub_num,3) == 0
-  stim = 2;
-  for ri = 1:nruns
-      trial = ri + (4*nruns);
-      one_back
-  end
-  stim = 1;
-  for ri = 1:nruns
-      trial = ri + (5*nruns);
-      one_back
-  end
-  stim = 0;
-  for ri = 1:nruns
-      trial = ri + (6*nruns);
-      one_back
-  end
-
-%% Condition 5
-elseif mod(sub_num,2) == 0
-  stim = 2;
-  %practice
-  for ri = 1:nruns
-      trial = ri;
-      one_back
-  end
-  stim = 1;
-  for ri = 1:nruns
-      trial = ri + nruns;
-      one_back
-  end
-  stim = 0;
-  for ri = 1:nruns
-      trial = ri + 7*nruns;
-      one_back
-  end
-
-%%% Condition 6
-else
-  stim = 2;
-  %practice
-  for ri = 1:nruns
-      trial = ri + (2*nruns);
-      one_back
-  end
-  stim = 1;
-  for ri = 1:nruns
-      trial = ri + (3*nruns);
-      one_back
-  end
-  stim = 0;
-  for ri = 1:nruns
-      trial = ri + (4*nruns);
-      one_back
-  end
-end
-% Final screen & Exit
- finalScreen
+%% Condition 5 
+elseif mod(sub_num,2) == 0 
+    stim = 1;
+    one_back_practice
+    for ri = 1:nruns
+        trial = ri;
+        one_back
+    end 
+    stim = 0;
+    for ri = 1:nruns
+        trial = ri + nruns;
+        one_back
+    end 
+    
+    %Transition screens to notify experimenter 
+    transition
+    
+    %Move on to next task
+    stim = 1;
+    zero_back_practice 
+    for ri = 1:nruns
+        trial = ri + (2*nruns);
+        zero_back 
+    end 
+    stim = 0;
+    for ri = 1:nruns
+        trial = ri + (3*nruns);
+        zero_back
+    end 
+    
+    %Transition once more 
+    transition
+    
+    % Final task
+    stim = 1;
+    two_back_practice
+    for ri = 1:nruns
+        trial = ri + (4*nruns);
+        two_back 
+    end
+    stim = 0; 
+    for ri = 1:nruns
+        trial = ri + (5*nruns);
+        two_back
+    end 
+    
+%% Condition 6 
+else 
+    stim = 1;
+    two_back_practice
+    for ri = 1:nruns
+        trial = ri;
+        two_back
+    end 
+    stim = 0;
+    for ri = 1:nruns
+        trial = ri + nruns;
+        two_back
+    end 
+    
+    %Transition screens to notify experimenter 
+    transition
+    
+    %Move on to next task
+    stim = 1;
+    one_back_practice 
+    for ri = 1:nruns
+        trial = ri + (2*nruns);
+        one_back 
+    end 
+    stim = 0;
+    for ri = 1:nruns
+        trial = ri + (3*nruns);
+        one_back 
+    end 
+    
+    %Transition once more 
+    transition
+    
+    % Final task
+    stim = 1;
+    zero_back_practice
+    for ri = 1:nruns
+        trial = ri + (4*nruns);
+        zero_back 
+    end
+    stim = 0; 
+    for ri = 1:nruns
+        trial = ri + (5*nruns);
+        zero_back 
+    end 
+end 
+ % Final screen & Exit 
+ finalScreen 

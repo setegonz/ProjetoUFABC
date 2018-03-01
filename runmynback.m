@@ -22,11 +22,28 @@ gray = white / 2;
 % hide cursor
 HideCursor;
 
-% Open the window
-PsychDebugWindowConfiguration;
-PsychImaging('PrepareConfiguration');
-PsychImaging('AddTask', 'General', 'UseRetinaResolution');
-[window, rect] = PsychImaging('OpenWindow', 0, []);
+    %% Setup Screen
+    iscreen = max(Screen('Screens'));
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Screen('Preference', 'SkipSyncTests', 1) % COMENTAR ISSO DEPOIS, NAO
+%         ESQUECER DE JEITO NENHUM!!! (descomentar apenas para testar no pc do lab)
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    oldVisualDebugLevel   = Screen('Preference', 'VisualDebugLevel',    3);
+    
+    oldSupressAllWarnings = Screen('Preference', 'SuppressAllWarnings', 1);
+    PsychImaging('PrepareConfiguration');
+    PsychImaging('AddTask', 'General', 'UseRetinaResolution');
+    PsychImaging('AddTask', 'FinalFormatting', 'DisplayColorCorrection', 'SimpleGamma');
+    video.i = iscreen;
+    HideCursor(video.i);
+    window  = Screen('OpenWindow', video.i);
+    Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    video.r = Screen('GetFlipInterval', window);
+    rect    = Screen('Rect', window);
+    xCenter = rect(3)/2;
+    yCenter = rect(4)/2;
+    
+    video.r
 
 %[0 0 1280 600]);
 
@@ -36,10 +53,20 @@ PsychImaging('AddTask', 'General', 'UseRetinaResolution');
 % Get the size of the screen window in pixels
 [screenXpixels, screenYpixels] = Screen('WindowSize', window);
 
-% Disable all keys except for space bar
-keys = 1:256;
-keys(44) = [];
-olddisabledkeys = DisableKeysForKbCheck(keys);
+% % Disable all keys except for space bar
+% keys = 1:256;
+% keys(44) = [];
+% olddisabledkeys = DisableKeysForKbCheck(keys);
+
+        %% KEYBOARD CONFIG
+KbName('UnifyKeyNames');
+spaceBar = KbName('space');
+clockKey =  KbName('1!');
+escapeKey   = KbName('ESCAPE');
+
+RestrictKeysForKbCheck([spaceBar,clockKey,escapeKey]);
+KbCheck;
+ListenChar(2);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,7 +115,7 @@ cd(h)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% Put data into a table %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T = cell2table(C, 'VariableNames', {'Trial', 'nBack', 'Valence', 'Image',...
-    'RT', 'Accuracy'});
+    'RT', 'Accuracy', 'Clock'});
 
 % Name file using sub_num & write table
 file_name = sprintf('sub_%d.txt',sub_num);

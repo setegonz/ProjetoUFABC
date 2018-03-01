@@ -1,104 +1,73 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%% General Practice set-up %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Instructions
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%% Choose stimuli sample for task %%%%%%%%%%%%%%%%%%%%
-practiceSourceImages = dir(fullfile(pwd,'stimuli','practice','*.jpg')) %practice
-
-% Choose random sample of 7 images without replacement
-[imageSample, imageSampleIdx] = datasample(practiceSourceImages, 7, 'Replace', false);
-
-% There is not a target image for 1-back and 2-back, this is for sizing
-% purposes only.
-targetImage = imread(fullfile(pwd, 'stimuli','practice', imageSample(1).name));
-
-
-%%%%%%%%%%%% Select index randomly to insert target image 3 times%%%%%%%%%%%%
-targetIdx1 = randi(length(imageSampleIdx));
-imageSampleIdx1 = [imageSampleIdx(1:targetIdx1) imageSampleIdx(targetIdx1)...
-    imageSampleIdx((targetIdx1 + 1):end)];
-
-targetIdx2 = randi(length(imageSampleIdx1));
-imageSampleIdx2 = [imageSampleIdx1(1:targetIdx2) imageSampleIdx1(targetIdx2)...
-    imageSampleIdx1((targetIdx2 + 1):end)];
-
-targetIdx3 = randi(length(imageSampleIdx2));
-
-% Final order of images
-shuffledImageSampleIdx = [imageSampleIdx2(1:targetIdx3) imageSampleIdx2(targetIdx3)...
-    imageSampleIdx2((targetIdx3 + 1):end)];
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%% Main routine for one-back task %%%%%%%%%%%%%%%%%%%%%%%%
-
-% Calculate size and x-coordinate of target image. Used to position
-% stimuli.
-[s1, s2, s3] = size(targetImage);
-targetImageX = (screenXpixels - s2) / 2;
-targetImageY = (screenYpixels - s1)/ 2;
-
-%%%%%%%%%%%%%% Store image textures in an array %%%%%%%%%%%%%%%%%%%%%%%
-images = [];
-for ii = 1:length(shuffledImageSampleIdx)
-    image = imread(fullfile(pwd, 'stimuli', 'practice', practiceSourceImages(shuffledImageSampleIdx(ii)).name));
-    images(ii) = Screen('MakeTexture', window, image);
-end
-
-% Display instructions for the task
-instructions = 'Apreta espaço se tem \n uma imagem doos vezes seguidas.\n practica.\n espaço pra começar.\n';
+intro = 'Welcome to the experiment! \n Press space to continue.';
 Screen('TextFont', window, 'Avenir');
 Screen('TextSize', window, 80);
-DrawFormattedText(window, instructions, 'center','center', 0, [], [], [], 1.5);
+DrawFormattedText(window, intro, 'center', 'center', 0, [], [], [], 1.5);
 Screen('Flip', window);
 
-% Wait until user presses a key
+KbWait;
+
+% instructions = 'In this experiment, \n you will be asked to respond \n to faces as quickly and accurately as possible. \n';
+% Screen('TextFont', window, 'Avenir');
+% Screen('TextSize', window, 80);
+% DrawFormattedText(window, instructions, 'center', 'center', 0, [], [], [], 1.5);
+% Screen('Flip', window);
+% 
+% [~, ~, ~] = KbWait([], 2);
+
+instructions = 'Now we will practice the first task. \n In these rounds, you will see a green fixation cross if \n you are correct and a red fixation cross if you are incorrect. \n Press space to begin.';
+Screen('TextFont', window, 'Avenir');
+Screen('TextSize', window, 80);
+DrawFormattedText(window, instructions, 'center', 'center', 0, [], [], [], 1.5);
+Screen('Flip', window);
+
 [~, ~, ~] = KbWait([], 2);
 
-% Draw fixation cross
-drawFixation(window, rect, 40, black, 4);
+% % Practice task intact 
+% stim = 0;
+% zero_back_practice 
+% 
+% intro = 'Sometimes the faces will be more difficult to see.\n Press space to practice.';
+% Screen('TextFont', window, 'Avenir');
+% Screen('TextSize', window, 80);
+% DrawFormattedText(window, intro, 'center', 'center', 0, [], [], [], 1.5);
+% Screen('Flip', window);
+% 
+% [~, ~, ~] = KbWait([], 2);
+% 
+% stim = 1;
+% zero_back_practice 
+
+intro = 'Now we will practice the one-back task.\n Press space to practice.';
+Screen('TextFont', window, 'Avenir');
+Screen('TextSize', window, 80);
+DrawFormattedText(window, intro, 'center', 'center', 0, [], [], [], 1.5);
 Screen('Flip', window);
-WaitSecs(1);
 
-fprintf('pressed,time,correct\n');
-% Display each image followed by fixation cross
-for ii = 1:length(shuffledImageSampleIdx)
-    % Draw the image so that it is centered
-    Screen('DrawTexture', window, images(ii), [],...
-        [(targetImageX) (targetImageY)...
-        (targetImageX + s2) (targetImageY + s1)], 0);
+[~, ~, ~] = KbWait([], 2);
+stim = 3;
+one_back_mateusV
+% stim = 1;
+% one_back_practice
+% stim = 2;
+% one_back_practice 
 
-    % Save the time the screen was flipped
-    stimulusStartTime = Screen('Flip', window);
+intro = 'Now we will practice the two-back task.\n Press space to practice.';
+Screen('TextFont', window, 'Avenir');
+Screen('TextSize', window, 80);
+DrawFormattedText(window, intro, 'center', 'center', 0, [], [], [], 1.5);
+Screen('Flip', window);
 
-    [keyWasPressed, responseTime] = recordKeys(stimulusStartTime, 1);
+[~, ~, ~] = KbWait([], 2);
 
-    if ii ~= 1
-        % Avoid negative indexing
-        if shuffledImageSampleIdx(ii) == shuffledImageSampleIdx(ii - 1)
-            wasTarget = 'true';
-        else
-            wasTarget = 'false';
-        end
-    else
-        wasTarget = 'false';
-    end
+stim = 3;
+two_back_practice 
+% stim = 1;
+% two_back_practice
+% stim = 2;
+% two_back_practice 
 
-    fprintf('%s,%0.4f,%s\n', keyWasPressed, responseTime, wasTarget);
-    % Displays a red or green fixation depending on whether the response is
-    % correct.
 
-    if strcmp    (keyWasPressed,wasTarget)
-        % Green fixation as feedback
-        drawFixation(window, rect, 40, [0 1 0], 4);
-        Screen('Flip', window);
-        WaitSecs(1);
-    else
-        % Red fixation as feedback
-        drawFixation(window, rect, 40, [1 0 0], 4);
-        Screen('Flip', window);
-        WaitSecs(1);
-    end
-
-end
-
-Screen('Close');
+% Close all screens 
+Screen('Close')

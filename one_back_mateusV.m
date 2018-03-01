@@ -11,9 +11,9 @@ try
         sourceImages = dir(fullfile(pwd,'stimuli','neutral','*.jpg'));
     elseif stim == 1
         sourceImages = dir(fullfile(pwd,'stimuli', 'positive','*.jpg'));
-    else stim == 2
+    elseif stim == 2
         sourceImages = dir(fullfile(pwd,'stimuli', 'negative','*.jpg'));
-    end;
+    end
     
     
     
@@ -38,7 +38,7 @@ try
         targetImage = imread(fullfile(pwd, 'stimuli', 'neutral', imageSample(1).name));
     elseif stim == 1
         targetImage = imread(fullfile(pwd, 'stimuli', 'positive', imageSample(1).name));
-    else stim == 2
+    elseif stim == 2
         targetImage = imread(fullfile(pwd, 'stimuli', 'negative', imageSample(1).name));
     end
     
@@ -61,7 +61,7 @@ try
     %Get the size of the on screen window
     % [screenXpixels, screenYpixels] = Screen('WindowSize', window); %screenXpixels=1280 %screenYpixels=800
     % % Get the centre coordinate of the window
-    % [xCenter, yCenter] = RectCenter(rect);
+    [xCenter, yCenter] = RectCenter(rect);
     
     % Calculate size and x-coordinate of target image. Used to position
     % stimuli.
@@ -95,7 +95,7 @@ try
     % Wait until user presses a key
     [~, ~, ~] = KbWait([], 2);
     
-    %Dibujar rectangulo
+    %draw square
     baseRect = [0 0 600 600];
     
     % Center the rectangle on the centre of the screen using fractional pixel
@@ -110,7 +110,7 @@ try
     % Display each image followed by fixation cross
     
     clockPress = false;
-    
+    dataClockPress = [];
     for ii = 1:length(shuffledImageSampleIdx)
         
         responseTime = NaN;
@@ -136,6 +136,8 @@ try
                     clockTimeMinutes = floor(clockTime/60); % minutos
                     clockTimeSecs    = floor(mod(clockTime,60)); % segundos
                     nowClock         = sprintf('%um%us', clockTimeMinutes, clockTimeSecs);
+                    
+                    dataClockPress = [dataClockPress clockTime];
                 end
             end
             
@@ -222,6 +224,7 @@ try
         else
             C(mi,6) = {0};
         end
+        C(mi,7) = {dataClockPress}; %Clock Monitoring
         %raceGender;
         mi = mi + 1;
         %
