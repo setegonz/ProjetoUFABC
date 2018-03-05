@@ -79,138 +79,152 @@ timeStart = Screen('Flip', window)
 fprintf('pressed,time,correct\n');
 % Display each image followed by fixation cross
 
+% First fixation cross
+drawFixation(window, rect, 40, black, 4);
+Screen('Flip', window);
+WaitSecs(1);
+
+startClock = false;
 clockPress = false;
-% drawFixation(window, rect, 40, black, 4);
-fixationStartTime = Screen('Flip', window);
+dataClockPress  = []; % vector to save when clock key was pressed
+dataOneMinPress = []; % vector to save when one minute key was pressed
 
-for ii = 1:length(shuffledImageSampleIdx)
-    responseTime = NaN;
-    time = GetSecs;
-    [keyIsDown, respTime, keyCode] = KbCheck;
-    firstFrame     = true;
-    firstStimFrame = true;
-    trialRun       = true;
-    keyWasPressed = 'false';
-    if ii ~= 1 %prova
-        % Avoid negative indexing
-        if shuffledImageSampleIdx(ii) == shuffledImageSampleIdx(ii - 1)
-            wasTarget = 'true';
-        else
-            wasTarget = 'false';
-        end
-    else
-        wasTarget = 'false';
-    end %prova
-    while trialRun
-        % Displays a red or green fixation depending on whether the response is
-        % correct.
-        %             if strcmp(keyWasPressed,wasTarget)
-        %                 % Green fixation as feedback
-        %                 drawFixation(window, rect, 40, [0 1 0], 4);
-        %                 Screen('Flip', window);
-        %                 WaitSecs(1);
-        %             else
-        %                 % Red fixation as feedback
-        %                 drawFixation(window, rect, 40, [1 0 0], 4);
-        %                 Screen('Flip', window);
-        %                 WaitSecs(1);
-        %             end %prova
-        %             if ~keyCode(nBackKey)
-        %                 [keyIsDown, respTime, keyCode] = KbCheck;
-        %                 if keyCode(nBackKey)
-        %                     keyWasPressed='true';
-        %                     responseTime = GetSecs-stimulusStartTime;
-        %                 end
-        %             end
-        if ~keyCode(clockKey)
-            [keyIsDown, respTime, keyCode] = KbCheck;
-            if keyCode(clockKey)
-                clockPress = true
-                timeClockPress = GetSecs;
-                % calcula o tempo do relogio
-                clockTime        = timeClockPress - timeStart; % em segundos
-                clockTimeMinutes = floor(clockTime/60); % minutos
-                clockTimeSecs    = floor(mod(clockTime,60)); % segundos
-                nowClock         = sprintf('%um%us', clockTimeMinutes, clockTimeSecs);
-            end
-        end
-        if firstFrame
-            time = GetSecs;
-            startClock = false;
-            firstFrame = false;
-            if startClock && (timeClockPress - shownClock > clockDuration)
-                clockPress = false;
-            end
-        else
-            if time - fixationStartTime < 1
-                time = GetSecs;
-                if startClock && (timeClockPress - shownClock > clockDuration)
-                    clockPress = false;
-                end
+    for ii = 1:length(shuffledImageSampleIdx)
+        
+        % verify if presented image was target or not
+        if ii ~= 1
+            % Avoid negative indexing
+            if shuffledImageSampleIdx(ii) == shuffledImageSampleIdx(ii - 1)
+                wasTarget = true;
             else
-                if firstStimFrame
-                    tStim = randi([10 30])/10; % tempo do estimulo na tela, entre 1s e 3s
-                    Screen('DrawTexture', window, images(ii), [], [centeredRect], 0);
-                    % Save the time the screen was flipped
-                    stimulusStartTime = Screen('Flip', window);
-                    time = GetSecs;
-                    %[keyWasPressed, responseTime] = recordKeys(stimulusStartTime, 1); %prova
-                    firstStimFrame = false;
+                wasTarget = false;
+            end
+        else
+            wasTarget = false;
+        end
+        
+        % response time variables
+        whenWasPressed  = NaN;
+        timeClockPress  = NaN;
+        timeNbackPress  = NaN;
+        timeOneMinPress = NaN;
+        
+        nBackPress = false;
+        
+        time = GetSecs;
+        
+        [keyIsDown, whenWasPressed, keyCode] = KbCheck;
+        
+        firstFrame     = true;
+        firstStimFrame = true;
+        trialRun       = true;
+        
+        while trialRun
+            % checks if any key was pressed
+            if GetSecs-whenWasPressed > .3 % but just after 300ms after the last press (to avoid "repetitions" of values on the matrix because of a long press in the button)
+                [keyIsDown, whenWasPressed, keyCode] = KbCheck;
+            end
+            if keyIsDown
+                if keyCode(clockKey)
+                    clockPress = true;
+                    timeClockPress = whenWasPressed;
                     
-                else
-                    if time - stimulusStartTime < tStim
-                        Screen('DrawTexture', window, images(ii), [], [centeredRect], 0);
-                        if clockPress
-                            if ~startClock
-                                startClock = true;
-                                shownClock = GetSecs;
-                            end
-                            DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
-                        end
-                        
-                        time = Screen('Flip', window);
-                        if startClock && (time - shownClock > clockDuration)
-                            clockPress = false;
-                        end
-                    else
-                        trialRun = false;
-                    end
+                    % calcula o tempo do relogio
+                    clockTime        = timeClockPress - timeStart; % em segundos
+                    clockTimeMinutes = floor(clockTime/60); % minutos
+                    clockTimeSecs    = floor(mod(clockTime,60)); % segundos
+                    nowClock         = sprintf('%um%us', clockTimeMinutes, clockTimeSecs);
+                    
+                    dataClockPress = [dataClockPress clockTime];
+                    clockTime = NaN;
+                    keyIsDown = false;
+                    
+                elseif keyCode(nBackKey)
+                    timeNbackPress = whenWasPressed-stimulusStartTime;
+                    nBackPress = true;
+                    keyIsDown = false;
+                    
+                elseif keyCode(oneMinKey)
+                    timeOneMinPress = whenWasPressed-timeStart;
+                    dataOneMinPress = [dataOneMinPress timeOneMinPress];
+                    timeOneMinPress = NaN;
+                    keyIsDown = false;
+                    
+                elseif keyCode(escapeKey)
+                    Screen('CloseAll');
+                    % Restores the mouse cursor.
+                    ShowCursor;
+                    ListenChar(0);
+                    % Restore preferences
+                    Screen('Preference', 'VisualDebugLevel',    oldVisualDebugLevel);
+                    Screen('Preference', 'SuppressAllWarnings', oldSupressAllWarnings);
+                    sca;
                 end
             end
+            
+            if firstStimFrame
+                tStim = randi([10 30])/10; % tempo do estimulo na tela, entre 1s e 3s
+                
+                Screen('DrawTexture', window, images(ii), [], [centeredRect], 0);
+                % Save the time the screen was flipped
+                stimulusStartTime = Screen('Flip', window);
+                time = GetSecs;
+                
+                firstStimFrame = false;
+            else
+                if time - stimulusStartTime < tStim
+                    Screen('DrawTexture', window, images(ii), [], [centeredRect], 0);
+                    
+                    if clockPress
+                        if ~startClock
+                            startClock = true;
+                            shownClock = GetSecs;
+                        end
+                        DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
+                    end
+                    
+                    time = Screen('Flip', window);
+                    if startClock && (time - shownClock > clockDuration)
+                        clockPress = false;
+                    end
+                else
+                    % Displays a red or green fixation depending on whether the response is correct
+                    if (nBackPress && wasTarget) || (~nBackPress && ~wasTarget)
+                        % Green fixation as feedback
+                        drawFixation(window, rect, 40, [0 255 0], 4);
+                        Screen('Flip', window);
+                        WaitSecs(1);
+                    elseif (nBackPress && ~wasTarget) || (~nBackPress && wasTarget)
+                        % Red fixation as feedback
+                        drawFixation(window, rect, 40, [255 0 0], 4);
+                        Screen('Flip', window);
+                        WaitSecs(1);
+                    end
+                    trialRun = false;
+                end
+            end
+            time = GetSecs;
         end
-        time = GetSecs;
+        
+        
+        
+        % Fill in data matrix accordingly
+        C(mi,1) = {ii}; %trial number
+        C(mi,2) = {1};     %task (0,1,2)
+        C(mi,3) = {stim};  %Valence
+        C(mi,4) = filenames(ii); %image
+        C(mi,5) = {timeNbackPress}; %response time for nBack
+        if (nBackPress && wasTarget) || (~nBackPress && ~wasTarget) %accuracy
+            C(mi,6) = {1};
+        else
+            C(mi,6) = {0};
+        end
+        C(mi,7) = {dataClockPress}; %Clock Monitoring
+        C(mi,8) = {dataOneMinPress};
+        %raceGender;
+        mi = mi + 1;
+        
+        dataClockPress  = [];
+        dataOneMinPress = [];
     end
-    
-    
-    %     if ii ~= 1
-    %         % Avoid negative indexing
-    %         if shuffledImageSampleIdx(ii) == shuffledImageSampleIdx(ii - 1)
-    %             wasTarget = 'true';
-    %         else
-    %             wasTarget = 'false';
-    %         end
-    %     else
-    %         wasTarget = 'false';
-    %     end
-    %
-    %
-    %         [keyWasPressed, responseTime] = recordKeys(stimulusStartTime, 1);
-    %
-    fprintf('%s,%0.4f,%s\n', keyWasPressed, responseTime, wasTarget);
-    % Displays a red or green fixation depending on whether the response is
-    % correct.
-    
-    if strcmp(keyWasPressed,wasTarget)
-        % Green fixation as feedback
-        drawFixation(window, rect, 40, [0 1 0], 4);
-        Screen('Flip', window);
-        WaitSecs(1);
-    else
-        % Red fixation as feedback
-        drawFixation(window, rect, 40, [1 0 0], 4);
-        Screen('Flip', window);
-        WaitSecs(1);
-    end
-end
-
 Screen('Close');

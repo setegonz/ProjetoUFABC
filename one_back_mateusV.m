@@ -60,13 +60,6 @@ try
         imageSampleIdx2((targetIdx3 + 1):end)];
     
     %% Main routine for one-back task
-    %Get the size of the on screen window
-    % [screenXpixels, screenYpixels] = Screen('WindowSize', window); %screenXpixels=1280 %screenYpixels=800
-    % % Get the centre coordinate of the window
-    %     [xCenter, yCenter] = RectCenter(rect);
-    
-    % Calculate size and x-coordinate of target image. Used to position
-    % stimuli.
     [s1, s2, s3] = size(targetImage);
     targetImageX = (screenXpixels - s2) / 2;
     targetImageY = (screenYpixels - s1)/ 2;
@@ -152,7 +145,7 @@ try
         
         while trialRun
             % checks if any key was pressed
-            if GetSecs-whenWasPressed > .3 % but just after 300s after the last press (to avoid "repetitions" of values on the matrix because of a long press in the button)
+            if GetSecs-whenWasPressed > .3 % but just after 300ms after the last press (to avoid "repetitions" of values on the matrix because of a long press in the button)
                 [keyIsDown, whenWasPressed, keyCode] = KbCheck;
             end
             if keyIsDown

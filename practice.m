@@ -1,6 +1,6 @@
 %% Instructions
 
-intro = 'Welcome to the experiment! \n Press space to continue.';
+intro = 'Bem-vindo ao experimento! \n Pressione espaço para continuar.';
 Screen('TextFont', window, 'Avenir');
 Screen('TextSize', window, 80);
 DrawFormattedText(window, intro, 'center', 'center', 0, [], [], [], 1.5);
@@ -16,7 +16,7 @@ KbWait;
 % 
 % [~, ~, ~] = KbWait([], 2);
 
-instructions = 'Now we will practice the first task. \n In these rounds, you will see a green fixation cross if \n you are correct and a red fixation cross if you are incorrect. \n Press space to begin.';
+instructions = 'Agora vamos praticar a primeira tarefa. \n Nessas rodadas, você verá uma cruz de fixação verde se \n você está correto e uma cruz vermelha de fixação se você estiver incorreto. \n Pressione espaço para começar.';
 Screen('TextFont', window, 'Avenir');
 Screen('TextSize', window, 80);
 DrawFormattedText(window, instructions, 'center', 'center', 0, [], [], [], 1.5);
@@ -39,7 +39,7 @@ Screen('Flip', window);
 % stim = 1;
 % zero_back_practice 
 
-intro = 'Now we will practice the one-back task.\n Press space to practice.';
+intro = 'Agora vamos praticar a tarefa one-back.\n Pressione espaço para praticar.';
 Screen('TextFont', window, 'Avenir');
 Screen('TextSize', window, 80);
 DrawFormattedText(window, intro, 'center', 'center', 0, [], [], [], 1.5);
@@ -53,7 +53,7 @@ one_back_mateusV
 % stim = 2;
 % one_back_practice 
 
-intro = 'Now we will practice the two-back task.\n Press space to practice.';
+intro = 'Agora vamos praticar a tarefa de duas costas.\n Pressione espaço para praticar.';
 Screen('TextFont', window, 'Avenir');
 Screen('TextSize', window, 80);
 DrawFormattedText(window, intro, 'center', 'center', 0, [], [], [], 1.5);
