@@ -3,13 +3,14 @@
 practiceSourceImages = dir(fullfile(pwd,'stimuli','practice','*.jpg')) %practice
 clockDuration = 1; % dura�ao do aparecimento do relogio
 
-         %% KEYBOARD CONFIG
+%% KEYBOARD CONFIG
 % KbName('UnifyKeyNames');
-% spaceBar = KbName('space');
-% clockKey =  KbName('1!');
-% escapeKey   = KbName('ESCAPE');
-% 
-% RestrictKeysForKbCheck([spaceBar,clockKey,escapeKey]);
+% nBackKey  = KbName('space');
+% clockKey  =  KbName('1!');
+% oneMinKey =  KbName('2@');
+% escapeKey = KbName('ESCAPE');
+%
+% RestrictKeysForKbCheck([nBackKey,clockKey,escapeKey]);
 % KbCheck;
 % ListenChar(2);
 
@@ -48,7 +49,7 @@ targetImageY = (screenYpixels - s1)/ 2;
 
 
 % Store image textures in an array
-    images = [];
+images = [];
 for ii = 1:length(shuffledImageSampleIdx)
     image = imread(fullfile(pwd, 'stimuli', 'practice', practiceSourceImages(shuffledImageSampleIdx(ii)).name));
     images(ii) = Screen('MakeTexture', window, image);
@@ -100,105 +101,105 @@ for ii = 1:length(shuffledImageSampleIdx)
     else
         wasTarget = 'false';
     end %prova
-        while trialRun
-            % Displays a red or green fixation depending on whether the response is
-            % correct.
-%             if strcmp(keyWasPressed,wasTarget)
-%                 % Green fixation as feedback
-%                 drawFixation(window, rect, 40, [0 1 0], 4);
-%                 Screen('Flip', window);
-%                 WaitSecs(1);
-%             else
-%                 % Red fixation as feedback
-%                 drawFixation(window, rect, 40, [1 0 0], 4);
-%                 Screen('Flip', window);
-%                 WaitSecs(1);
-%             end %prova
-%             if ~keyCode(spaceBar)
-%                 [keyIsDown, respTime, keyCode] = KbCheck;
-%                 if keyCode(spaceBar)
-%                     keyWasPressed='true';
-%                     responseTime = GetSecs-stimulusStartTime;
-%                 end
-%             end
-            if ~keyCode(clockKey)
-                [keyIsDown, respTime, keyCode] = KbCheck;
-                if keyCode(clockKey)
-                    clockPress = true
-                    timeClockPress = GetSecs;
-                    % calcula o tempo do relogio
-                    clockTime        = timeClockPress - timeStart; % em segundos
-                    clockTimeMinutes = floor(clockTime/60); % minutos
-                    clockTimeSecs    = floor(mod(clockTime,60)); % segundos
-                    nowClock         = sprintf('%um%us', clockTimeMinutes, clockTimeSecs);
-                end
+    while trialRun
+        % Displays a red or green fixation depending on whether the response is
+        % correct.
+        %             if strcmp(keyWasPressed,wasTarget)
+        %                 % Green fixation as feedback
+        %                 drawFixation(window, rect, 40, [0 1 0], 4);
+        %                 Screen('Flip', window);
+        %                 WaitSecs(1);
+        %             else
+        %                 % Red fixation as feedback
+        %                 drawFixation(window, rect, 40, [1 0 0], 4);
+        %                 Screen('Flip', window);
+        %                 WaitSecs(1);
+        %             end %prova
+        %             if ~keyCode(nBackKey)
+        %                 [keyIsDown, respTime, keyCode] = KbCheck;
+        %                 if keyCode(nBackKey)
+        %                     keyWasPressed='true';
+        %                     responseTime = GetSecs-stimulusStartTime;
+        %                 end
+        %             end
+        if ~keyCode(clockKey)
+            [keyIsDown, respTime, keyCode] = KbCheck;
+            if keyCode(clockKey)
+                clockPress = true
+                timeClockPress = GetSecs;
+                % calcula o tempo do relogio
+                clockTime        = timeClockPress - timeStart; % em segundos
+                clockTimeMinutes = floor(clockTime/60); % minutos
+                clockTimeSecs    = floor(mod(clockTime,60)); % segundos
+                nowClock         = sprintf('%um%us', clockTimeMinutes, clockTimeSecs);
             end
-            if firstFrame
+        end
+        if firstFrame
+            time = GetSecs;
+            startClock = false;
+            firstFrame = false;
+            if startClock && (timeClockPress - shownClock > clockDuration)
+                clockPress = false;
+            end
+        else
+            if time - fixationStartTime < 1
                 time = GetSecs;
-                startClock = false;
-                firstFrame = false;
                 if startClock && (timeClockPress - shownClock > clockDuration)
                     clockPress = false;
                 end
             else
-                if time - fixationStartTime < 1
+                if firstStimFrame
+                    tStim = randi([10 30])/10; % tempo do estimulo na tela, entre 1s e 3s
+                    Screen('DrawTexture', window, images(ii), [], [centeredRect], 0);
+                    % Save the time the screen was flipped
+                    stimulusStartTime = Screen('Flip', window);
                     time = GetSecs;
-                    if startClock && (timeClockPress - shownClock > clockDuration)
-                        clockPress = false;
-                    end
+                    %[keyWasPressed, responseTime] = recordKeys(stimulusStartTime, 1); %prova
+                    firstStimFrame = false;
+                    
                 else
-                    if firstStimFrame
-                        tStim = randi([10 30])/10; % tempo do estimulo na tela, entre 1s e 3s
+                    if time - stimulusStartTime < tStim
                         Screen('DrawTexture', window, images(ii), [], [centeredRect], 0);
-                        % Save the time the screen was flipped
-                        stimulusStartTime = Screen('Flip', window);
-                        time = GetSecs;
-                        %[keyWasPressed, responseTime] = recordKeys(stimulusStartTime, 1); %prova
-                        firstStimFrame = false;
-
-                    else
-                        if time - stimulusStartTime < tStim
-                            Screen('DrawTexture', window, images(ii), [], [centeredRect], 0);
-                            if clockPress
-                                if ~startClock
-                                    startClock = true;
-                                    shownClock = GetSecs;
-                                end
-                                DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
+                        if clockPress
+                            if ~startClock
+                                startClock = true;
+                                shownClock = GetSecs;
                             end
-
-                            time = Screen('Flip', window);
-                            if startClock && (time - shownClock > clockDuration)
-                                clockPress = false;
+                            DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
                         end
-                        else
-                            trialRun = false;                                                    
+                        
+                        time = Screen('Flip', window);
+                        if startClock && (time - shownClock > clockDuration)
+                            clockPress = false;
                         end
+                    else
+                        trialRun = false;
                     end
                 end
             end
-            time = GetSecs;
         end
-
-
-%     if ii ~= 1
-%         % Avoid negative indexing
-%         if shuffledImageSampleIdx(ii) == shuffledImageSampleIdx(ii - 1)
-%             wasTarget = 'true';
-%         else
-%             wasTarget = 'false';
-%         end
-%     else
-%         wasTarget = 'false';
-%     end
-% 
-% 
-%         [keyWasPressed, responseTime] = recordKeys(stimulusStartTime, 1);
-% 
-fprintf('%s,%0.4f,%s\n', keyWasPressed, responseTime, wasTarget);
+        time = GetSecs;
+    end
+    
+    
+    %     if ii ~= 1
+    %         % Avoid negative indexing
+    %         if shuffledImageSampleIdx(ii) == shuffledImageSampleIdx(ii - 1)
+    %             wasTarget = 'true';
+    %         else
+    %             wasTarget = 'false';
+    %         end
+    %     else
+    %         wasTarget = 'false';
+    %     end
+    %
+    %
+    %         [keyWasPressed, responseTime] = recordKeys(stimulusStartTime, 1);
+    %
+    fprintf('%s,%0.4f,%s\n', keyWasPressed, responseTime, wasTarget);
     % Displays a red or green fixation depending on whether the response is
     % correct.
-
+    
     if strcmp(keyWasPressed,wasTarget)
         % Green fixation as feedback
         drawFixation(window, rect, 40, [0 1 0], 4);
@@ -212,4 +213,4 @@ fprintf('%s,%0.4f,%s\n', keyWasPressed, responseTime, wasTarget);
     end
 end
 
-    Screen('Close');
+Screen('Close');

@@ -46,7 +46,7 @@ DrawFormattedText(window, intro, 'center', 'center', 0, [], [], [], 1.5);
 Screen('Flip', window);
 
 [~, ~, ~] = KbWait([], 2);
-stim = 3;
+stim = 0;
 one_back_mateusV
 % stim = 1;
 % one_back_practice
@@ -61,8 +61,8 @@ Screen('Flip', window);
 
 [~, ~, ~] = KbWait([], 2);
 
-stim = 3;
-two_back_practice 
+stim = 0;
+% two_back_practice 
 % stim = 1;
 % two_back_practice
 % stim = 2;

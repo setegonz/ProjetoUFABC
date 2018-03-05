@@ -9,7 +9,8 @@ clearvars;
 h = pwd;
 
 % Get subject number from user
-sub_num = input ('Subject number: ');
+% sub_num = input ('Subject number: ');
+sub_num = 1 %depois descomentar a linha de cima e apagar essa
 
 % Perform standard setup for Psychtoolbox
 PsychDefaultSetup(2);
@@ -22,28 +23,28 @@ gray = white / 2;
 % hide cursor
 HideCursor;
 
-    %% Setup Screen
-    iscreen = max(Screen('Screens'));
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    Screen('Preference', 'SkipSyncTests', 1) % COMENTAR ISSO DEPOIS, NAO
+%% Setup Screen
+iscreen = max(Screen('Screens'));
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Screen('Preference', 'SkipSyncTests', 1) % COMENTAR ISSO DEPOIS, NAO
 %         ESQUECER DE JEITO NENHUM!!! (descomentar apenas para testar no pc do lab)
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    oldVisualDebugLevel   = Screen('Preference', 'VisualDebugLevel',    3);
-    
-    oldSupressAllWarnings = Screen('Preference', 'SuppressAllWarnings', 1);
-    PsychImaging('PrepareConfiguration');
-    PsychImaging('AddTask', 'General', 'UseRetinaResolution');
-    PsychImaging('AddTask', 'FinalFormatting', 'DisplayColorCorrection', 'SimpleGamma');
-    video.i = iscreen;
-    HideCursor(video.i);
-    window  = Screen('OpenWindow', video.i);
-    Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    video.r = Screen('GetFlipInterval', window);
-    rect    = Screen('Rect', window);
-    xCenter = rect(3)/2;
-    yCenter = rect(4)/2;
-    
-    video.r
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+oldVisualDebugLevel   = Screen('Preference', 'VisualDebugLevel',    3);
+
+oldSupressAllWarnings = Screen('Preference', 'SuppressAllWarnings', 1);
+PsychImaging('PrepareConfiguration');
+PsychImaging('AddTask', 'General', 'UseRetinaResolution');
+PsychImaging('AddTask', 'FinalFormatting', 'DisplayColorCorrection', 'SimpleGamma');
+video.i = iscreen;
+HideCursor(video.i);
+window  = Screen('OpenWindow', video.i);
+Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+video.r = Screen('GetFlipInterval', window);
+rect    = Screen('Rect', window);
+xCenter = rect(3)/2;
+yCenter = rect(4)/2;
+
+video.r
 
 %[0 0 1280 600]);
 
@@ -58,13 +59,14 @@ HideCursor;
 % keys(44) = [];
 % olddisabledkeys = DisableKeysForKbCheck(keys);
 
-        %% KEYBOARD CONFIG
+%% KEYBOARD CONFIG
 KbName('UnifyKeyNames');
-spaceBar = KbName('space');
-clockKey =  KbName('1!');
-escapeKey   = KbName('ESCAPE');
+nBackKey  = KbName('space');
+clockKey  =  KbName('1!');
+oneMinKey =  KbName('2@'); 
+escapeKey = KbName('ESCAPE');
 
-RestrictKeysForKbCheck([spaceBar,clockKey,escapeKey]);
+RestrictKeysForKbCheck([nBackKey,clockKey,oneMinKey,escapeKey]);
 KbCheck;
 ListenChar(2);
 
@@ -86,9 +88,11 @@ C = cell(nruns*60,6);
 % collection purposes.
 mi = 1;
 
+clockDuration = 1; % duracao do aparecimento do relogio
+
 % Create directory of images
-practiceSourceImages = dir(fullfile(pwd,'stimuli','practice','*.jpg')) %practice
-neutralSourceImages = dir(fullfile(pwd,'stimuli','neutral','*.jpg'));    %Neutral
+practiceSourceImages = dir(fullfile(pwd,'stimuli','practice','*.jpg')); %practice
+neutralSourceImages  = dir(fullfile(pwd,'stimuli','neutral','*.jpg'));  %Neutral
 positiveSourceImages = dir(fullfile(pwd,'stimuli','positive','*.jpg')); %Positive
 negativeSourceImages = dir(fullfile(pwd,'stimuli','negative','*.jpg')); %Negative
 

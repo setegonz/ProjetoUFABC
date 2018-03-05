@@ -3,11 +3,12 @@
 practiceSourceImages = dir(fullfile(pwd,'stimuli','practice','*.jpg')) %practice
 clockDuration = 1; % dura�ao do aparecimento do relogio
 
-        %% KEYBOARD CONFIG
+%% KEYBOARD CONFIG
 KbName('UnifyKeyNames');
-spaceBar = KbName('space');
-clockKey =  KbName('1!');
-escapeKey   = KbName('ESCAPE');
+nBackKey  = KbName('space');
+clockKey  =  KbName('1!');
+oneMinKey =  KbName('2@');
+escapeKey = KbName('ESCAPE');
 
 RestrictKeysForKbCheck([spaceBar,clockKey,escapeKey]);
 KbCheck;
@@ -77,16 +78,16 @@ WaitSecs(1);
 fprintf('pressed,time,correct\n');
 % Display each image followed by fixation cross
 for ii = 1:length(shuffledImageSampleIdx)
-% Draw the texture so that it is centered
-   Screen('DrawTexture', window, images(ii), [],...
+    % Draw the texture so that it is centered
+    Screen('DrawTexture', window, images(ii), [],...
         [(targetImageX) (targetImageY)...
         (targetImageX + s2) (targetImageY + s1)], 0);
-
+    
     % Save the time the screen was flipped
     stimulusStartTime = Screen('Flip', window);
-
+    
     [keyWasPressed, responseTime] = recordKeys(stimulusStartTime, 1);
-
+    
     if ii > 2
         % Avoid negative indexing
         if shuffledImageSampleIdx(ii) == shuffledImageSampleIdx(ii - 2)
@@ -97,10 +98,10 @@ for ii = 1:length(shuffledImageSampleIdx)
     else
         wasTarget = 'false';
     end
-
+    
     fprintf('%s,%0.4f,%s\n', keyWasPressed, responseTime, wasTarget);
-
-     if strcmp    (keyWasPressed,wasTarget)
+    
+    if strcmp    (keyWasPressed,wasTarget)
         % Green fixation as feedback
         drawFixation(window, rect, 40, [0 1 0], 4);
         Screen('Flip', window);
