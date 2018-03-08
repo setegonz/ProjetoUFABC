@@ -1,5 +1,5 @@
 
-try
+% try
     
     %% General set-up
     neutralSourceImages = dir(fullfile(pwd,'stimuli','neutral','*.jpg'));    %Neutral
@@ -206,7 +206,6 @@ try
                         end
                         DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
                     end
-                    
                     time = Screen('Flip', window);
                     if startClock && (time - shownClock > clockDuration)
                         clockPress = false;
@@ -254,26 +253,26 @@ try
     
     Screen('Close');
     
-catch
-    
-    % ---------- Error Handling ----------
-    % If there is an error in our code, we will end up here.
-    
-    % The try-catch block ensures that Screen will restore the display and return us
-    % to the MATLAB prompt even if there is an error in our code.  Without this try-catch
-    % block, Screen could still have control of the display when MATLAB throws an error, in
-    % which case the user will not see the MATLAB prompt.
-    Screen('CloseAll');
-    
-    % Restores the mouse cursor.
-    ShowCursor;
-    ListenChar(0);
-    
-    % Restore preferences
-    Screen('Preference', 'VisualDebugLevel',    oldVisualDebugLevel);
-    Screen('Preference', 'SuppressAllWarnings', oldSupressAllWarnings);
-    
-    % We throw the error again so the user sees the error description.
-    psychrethrow(psychlasterror);
-    
-end
+% catch
+%     
+%     % ---------- Error Handling ----------
+%     % If there is an error in our code, we will end up here.
+%     
+%     % The try-catch block ensures that Screen will restore the display and return us
+%     % to the MATLAB prompt even if there is an error in our code.  Without this try-catch
+%     % block, Screen could still have control of the display when MATLAB throws an error, in
+%     % which case the user will not see the MATLAB prompt.
+%     Screen('CloseAll');
+%     
+%     % Restores the mouse cursor.
+%     ShowCursor;
+%     ListenChar(0);
+%     
+%     % Restore preferences
+%     Screen('Preference', 'VisualDebugLevel',    oldVisualDebugLevel);
+%     Screen('Preference', 'SuppressAllWarnings', oldSupressAllWarnings);
+%     
+%     % We throw the error again so the user sees the error description.
+%     psychrethrow(psychlasterror);
+%     
+% end

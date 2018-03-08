@@ -1,4 +1,5 @@
- %% General set-up 
+try
+%% General set-up 
 
 % Get names of task source images depending on stim type
     %% General set-up
@@ -78,7 +79,7 @@ for ii = 1:length(shuffledImageSampleIdx)
 end
  
 % Display instructions for the task
-instructions = 'Press the spacebar when you see an image that \n matches the one presented two prior.\n Press space to begin. \n';
+instructions = 'Apreta espaço se tem \n uma imagem doos vezes seguidas.\n practica.\n espaço pra começar.\n';
 Screen('TextFont', window, 'Avenir');
 Screen('TextSize', window, 80);
 DrawFormattedText(window, instructions, 'center', 'center', 0, [], [], [], 1.5);
@@ -114,12 +115,12 @@ for ii = 1:length(shuffledImageSampleIdx)
     if ii > 2
         % Avoid negative indexing
         if shuffledImageSampleIdx(ii) == shuffledImageSampleIdx(ii - 2)
-            wasTarget = 'true';                
+            wasTarget = true;                
         else         
-            wasTarget = 'false';    
+            wasTarget = false;    
         end
     else
-        wasTarget = 'false';
+        wasTarget = false;
     end
     % response time variables
     whenWasPressed  = NaN;
@@ -130,53 +131,54 @@ for ii = 1:length(shuffledImageSampleIdx)
     nBackPress = false;
     
     time = GetSecs;
+    
     [keyIsDown, whenWasPressed, keyCode] = KbCheck;
     
     firstFrame     = true;
     firstStimFrame = true;
     trialRun       = true;
     
-        while trialRun
-            % checks if any key was pressed
-            if GetSecs-whenWasPressed > .3 % but just after 300ms after the last press (to avoid "repetitions" of values on the matrix because of a long press in the button)
-                [keyIsDown, whenWasPressed, keyCode] = KbCheck;
+    while trialRun
+        % checks if any key was pressed
+        if GetSecs-whenWasPressed > .3 % but just after 300ms after the last press (to avoid "repetitions" of values on the matrix because of a long press in the button)
+            [keyIsDown, whenWasPressed, keyCode] = KbCheck;
+        end
+        if keyIsDown
+            if keyCode(clockKey)
+                clockPress = true;
+                timeClockPress = whenWasPressed;
+                
+                % calcula o tempo do relogio
+                clockTime        = timeClockPress - timeStart; % em segundos
+                clockTimeMinutes = floor(clockTime/60); % minutos
+                clockTimeSecs    = floor(mod(clockTime,60)); % segundos
+                nowClock         = sprintf('%um%us', clockTimeMinutes, clockTimeSecs);
+                
+                dataClockPress = [dataClockPress clockTime];
+                clockTime = NaN;
+                keyIsDown = false;
+                
+            elseif keyCode(nBackKey)
+                timeNbackPress = whenWasPressed-stimulusStartTime;
+                nBackPress = true;
+                keyIsDown = false;
+                
+            elseif keyCode(oneMinKey)
+                timeOneMinPress = whenWasPressed-timeStart;
+                dataOneMinPress = [dataOneMinPress timeOneMinPress];
+                timeOneMinPress = NaN;
+                keyIsDown = false;
+                
+            elseif keyCode(escapeKey)
+                Screen('CloseAll');
+                % Restores the mouse cursor.
+                ShowCursor;
+                ListenChar(0);
+                % Restore preferences
+                Screen('Preference', 'VisualDebugLevel',    oldVisualDebugLevel);
+                Screen('Preference', 'SuppressAllWarnings', oldSupressAllWarnings);
+                sca;
             end
-            if keyIsDown
-                if keyCode(clockKey)
-                    clockPress = true;
-                    timeClockPress = whenWasPressed;
-                    
-                    % calcula o tempo do relogio
-                    clockTime        = timeClockPress - timeStart; % em segundos
-                    clockTimeMinutes = floor(clockTime/60); % minutos
-                    clockTimeSecs    = floor(mod(clockTime,60)); % segundos
-                    nowClock         = sprintf('%um%us', clockTimeMinutes, clockTimeSecs);
-                    
-                    dataClockPress = [dataClockPress clockTime];
-                    clockTime = NaN;
-                    keyIsDown = false;
-                    
-                elseif keyCode(nBackKey)
-                    timeNbackPress = whenWasPressed-stimulusStartTime;
-                    nBackPress = true;
-                    keyIsDown = false;
-                    
-                elseif keyCode(oneMinKey)
-                    timeOneMinPress = whenWasPressed-timeStart;
-                    dataOneMinPress = [dataOneMinPress timeOneMinPress];
-                    timeOneMinPress = NaN;
-                    keyIsDown = false;
-                    
-                elseif keyCode(escapeKey)
-                    Screen('CloseAll');
-                    % Restores the mouse cursor.
-                    ShowCursor;
-                    ListenChar(0);
-                    % Restore preferences
-                    Screen('Preference', 'VisualDebugLevel',    oldVisualDebugLevel);
-                    Screen('Preference', 'SuppressAllWarnings', oldSupressAllWarnings);
-                    sca;
-                end
             end
             
             if firstStimFrame
@@ -199,10 +201,22 @@ for ii = 1:length(shuffledImageSampleIdx)
                         end
                         DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
                     end
-                    
                     time = Screen('Flip', window);
                     if startClock && (time - shownClock > clockDuration)
                         clockPress = false;
+                    end
+                else
+                    % Displays a red or green fixation depending on whether the response is correct
+                    if (nBackPress && wasTarget) || (~nBackPress && ~wasTarget)
+                        % Green fixation as feedback
+                        drawFixation(window, rect, 40, [0 255 0], 4);
+                        Screen('Flip', window);
+                        WaitSecs(1);
+                    elseif (nBackPress && ~wasTarget) || (~nBackPress && wasTarget)
+                        % Red fixation as feedback
+                        drawFixation(window, rect, 40, [255 0 0], 4);
+                        Screen('Flip', window);
+                        WaitSecs(1);
                     end
                     trialRun = false;
                 end
@@ -233,3 +247,27 @@ for ii = 1:length(shuffledImageSampleIdx)
     dataOneMinPress = [];
 end
 Screen('Close');
+
+catch
+    
+    % ---------- Error Handling ----------
+    % If there is an error in our code, we will end up here.
+    
+    % The try-catch block ensures that Screen will restore the display and return us
+    % to the MATLAB prompt even if there is an error in our code.  Without this try-catch
+    % block, Screen could still have control of the display when MATLAB throws an error, in
+    % which case the user will not see the MATLAB prompt.
+    Screen('CloseAll');
+    
+    % Restores the mouse cursor.
+    ShowCursor;
+    ListenChar(0);
+    
+    % Restore preferences
+    Screen('Preference', 'VisualDebugLevel',    oldVisualDebugLevel);
+    Screen('Preference', 'SuppressAllWarnings', oldSupressAllWarnings);
+    
+    % We throw the error again so the user sees the error description.
+    psychrethrow(psychlasterror);
+    
+end
