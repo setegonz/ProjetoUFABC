@@ -104,7 +104,7 @@
     fprintf('pressed,time,correct\n');
     
     % First fixation cross
-    drawFixation(window, rect, 40, black, 4);
+    drawFixation(window, rect, 40, black, 4); %insert noise
     Screen('Flip', window);
     WaitSecs(1);
     
