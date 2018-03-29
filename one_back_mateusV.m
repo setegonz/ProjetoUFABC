@@ -1,5 +1,5 @@
 
-% try
+try
     
     %% General set-up
     neutralSourceImages = dir(fullfile(pwd,'stimuli','neutral','*.jpg'));    %Neutral
@@ -60,6 +60,13 @@
         imageSampleIdx2((targetIdx3 + 1):end)];
     
     %% Main routine for one-back task
+    %Get the size of the on screen window
+    % [screenXpixels, screenYpixels] = Screen('WindowSize', window); %screenXpixels=1280 %screenYpixels=800
+    % % Get the centre coordinate of the window
+    %     [xCenter, yCenter] = RectCenter(rect);
+    
+    % Calculate size and x-coordinate of target image. Used to position
+    % stimuli.
     [s1, s2, s3] = size(targetImage);
     targetImageX = (screenXpixels - s2) / 2;
     targetImageY = (screenYpixels - s1)/ 2;
@@ -104,7 +111,7 @@
     fprintf('pressed,time,correct\n');
     
     % First fixation cross
-    drawFixation(window, rect, 40, black, 4); %insert noise
+    drawFixation(window, rect, 40, black, 4);
     Screen('Flip', window);
     WaitSecs(1);
     
@@ -112,6 +119,9 @@
     clockPress = false;
     dataClockPress  = []; % vector to save when clock key was pressed
     dataOneMinPress = []; % vector to save when one minute key was pressed
+    
+    tStim = .5; %500ms
+    tISI = setISI; % tempo do estimulo na tela, entre  .3s e 3s
     
     for ii = 1:length(shuffledImageSampleIdx)
         
@@ -145,7 +155,7 @@
         
         while trialRun
             % checks if any key was pressed
-            if GetSecs-whenWasPressed > .3 % but just after 300ms after the last press (to avoid "repetitions" of values on the matrix because of a long press in the button)
+            if GetSecs-whenWasPressed > .3 % but just after 300s after the last press (to avoid "repetitions" of values on the matrix because of a long press in the button)
                 [keyIsDown, whenWasPressed, keyCode] = KbCheck;
             end
             if keyIsDown
@@ -173,6 +183,7 @@
                     dataOneMinPress = [dataOneMinPress timeOneMinPress];
                     timeOneMinPress = NaN;
                     keyIsDown = false;
+                    timeStart = GetSecs; %reset do relogio
                     
                 elseif keyCode(escapeKey)
                     Screen('CloseAll');
@@ -187,7 +198,7 @@
             end
             
             if firstStimFrame
-                tStim = randi([10 30])/10; % tempo do estimulo na tela, entre 1s e 3s
+                
                 
                 Screen('DrawTexture', window, images(ii), [], [centeredRect], 0);
                 % Save the time the screen was flipped
@@ -206,23 +217,23 @@
                         end
                         DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
                     end
+                    
                     time = Screen('Flip', window);
                     if startClock && (time - shownClock > clockDuration)
                         clockPress = false;
                     end
+                elseif (time - stimulusStartTime >= tStim) && (time - stimulusStartTime < tISI(ii))
+                    [x, y] = meshgrid(-250:1:250, -250:1:250);
+                    [s1, s2] = size(x);
+                    
+                    % Make ablack and white noise texture
+                    noise = wgn(s1,s2,0);
+                    noiseTexture = Screen('MakeTexture', window, noise);
+                    
+                    % Batch Draw all of the texures to screen
+                    Screen('DrawTextures', window, noiseTexture, [], centeredRect);
+                    Screen('Flip', window);
                 else
-                    % Displays a red or green fixation depending on whether the response is correct
-                    if (nBackPress && wasTarget) || (~nBackPress && ~wasTarget)
-                        % Green fixation as feedback
-                        drawFixation(window, rect, 40, [0 255 0], 4);
-                        Screen('Flip', window);
-                        WaitSecs(1);
-                    elseif (nBackPress && ~wasTarget) || (~nBackPress && wasTarget)
-                        % Red fixation as feedback
-                        drawFixation(window, rect, 40, [255 0 0], 4);
-                        Screen('Flip', window);
-                        WaitSecs(1);
-                    end
                     trialRun = false;
                 end
             end
@@ -253,26 +264,26 @@
     
     Screen('Close');
     
-% catch
-%     
-%     % ---------- Error Handling ----------
-%     % If there is an error in our code, we will end up here.
-%     
-%     % The try-catch block ensures that Screen will restore the display and return us
-%     % to the MATLAB prompt even if there is an error in our code.  Without this try-catch
-%     % block, Screen could still have control of the display when MATLAB throws an error, in
-%     % which case the user will not see the MATLAB prompt.
-%     Screen('CloseAll');
-%     
-%     % Restores the mouse cursor.
-%     ShowCursor;
-%     ListenChar(0);
-%     
-%     % Restore preferences
-%     Screen('Preference', 'VisualDebugLevel',    oldVisualDebugLevel);
-%     Screen('Preference', 'SuppressAllWarnings', oldSupressAllWarnings);
-%     
-%     % We throw the error again so the user sees the error description.
-%     psychrethrow(psychlasterror);
-%     
-% end
+catch
+    
+    % ---------- Error Handling ----------
+    % If there is an error in our code, we will end up here.
+    
+    % The try-catch block ensures that Screen will restore the display and return us
+    % to the MATLAB prompt even if there is an error in our code.  Without this try-catch
+    % block, Screen could still have control of the display when MATLAB throws an error, in
+    % which case the user will not see the MATLAB prompt.
+    Screen('CloseAll');
+    
+    % Restores the mouse cursor.
+    ShowCursor;
+    ListenChar(0);
+    
+    % Restore preferences
+    Screen('Preference', 'VisualDebugLevel',    oldVisualDebugLevel);
+    Screen('Preference', 'SuppressAllWarnings', oldSupressAllWarnings);
+    
+    % We throw the error again so the user sees the error description.
+    psychrethrow(psychlasterror);
+    
+end
