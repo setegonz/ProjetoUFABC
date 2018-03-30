@@ -15,6 +15,11 @@ task = input ('Task: 1 = 1-back, 2 = 2-back : ');
 stim = input('Valence: 0 = neutral, 1 = positive, 2 = negative: ');
 nruns = input('Number of runs? ');
 
+% Define black, white, and gray
+black = BlackIndex(0);
+white = WhiteIndex(0);
+grey = white / 2;
+
 % subject = 'v'
 % task = 1
 % stim = 0
@@ -82,10 +87,9 @@ try
     if task == 1
         for ri = 1:nruns
             trial = ri;
-            %one_back
-            %nuevotryme
-            one_back_mateusV
-            %one_back_mateus_andre
+            one_back_practiceV
+%             one_back_mateusV
+            
         end
     end
 
@@ -99,7 +103,7 @@ try
     %    'RT', 'Accuracy', 'Race', 'Gender'});
 
     T = cell2table(C, 'VariableNames', {'Trial', 'nBack', 'Valence', 'Image',...
-        'RT', 'Accuracy', 'Clock'});
+        'RT', 'Accuracy', 'Clock', 'dataOneMinPress'});
 
     % Name file using sub_num & write table
     file_name = sprintf('sub_%s.txt',subject);

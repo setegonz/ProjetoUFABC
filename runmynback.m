@@ -18,7 +18,7 @@ PsychDefaultSetup(2);
 % Define black, white, and gray
 black = BlackIndex(0);
 white = WhiteIndex(0);
-gray = white / 2;
+grey = white / 2;
 
 % hide cursor
 HideCursor;
@@ -76,7 +76,7 @@ ListenChar(2);
 
 % Set the number of runs. The script will run each condition this many
 % times.
-nruns = 1;
+nruns = 2;
 
 % Preallocate a cell array to collect data. There are 10 trials per run and
 % 6 conditions (6*10), which we can muliply by the number of runs. There

@@ -216,8 +216,7 @@ try
                             shownClock = GetSecs;
                         end
                         DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
-                    end
-                    
+                    end    
                     time = Screen('Flip', window);
                     if startClock && (time - shownClock > clockDuration)
                         clockPress = false;
@@ -232,6 +231,13 @@ try
                     
                     % Batch Draw all of the texures to screen
                     Screen('DrawTextures', window, noiseTexture, [], centeredRect);
+                    if clockPress
+                        if ~startClock
+                            startClock = true;
+                            shownClock = GetSecs;
+                        end
+                        DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
+                    end
                     Screen('Flip', window);
                 else
                     trialRun = false;
