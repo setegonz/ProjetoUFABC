@@ -90,22 +90,25 @@ dataClockPress  = []; % vector to save when clock key was pressed
 dataOneMinPress = []; % vector to save when one minute key was pressed
 tStim = 1; %500ms~
 tISI = setISI; % tempo do estimulo na tela, entre  .3s e 3s
+
+[keyIsDown, whenWasPressed, keyCode] = KbCheck;
+
     for ii = 1:length(shuffledImageSampleIdx)
         
-%         % verify if presented image was target or not
-%         if ii ~= 1
-%             % Avoid negative indexing
-%             if shuffledImageSampleIdx(ii) == shuffledImageSampleIdx(ii - 1)
-%                 wasTarget = true;
-%             else
-%                 wasTarget = false;
-%             end
-%         else
-%             wasTarget = false;
-%         end
+        % verify if presented image was target or not
+        if ii ~= 1
+            % Avoid negative indexing
+            if shuffledImageSampleIdx(ii) == shuffledImageSampleIdx(ii - 1)
+                wasTarget = true;
+            else
+                wasTarget = false;
+            end
+        else
+            wasTarget = false;
+        end
         
         % response time variables
-        whenWasPressed  = NaN;
+        
         timeClockPress  = NaN;
         timeNbackPress  = NaN;
         timeOneMinPress = NaN;
@@ -114,15 +117,13 @@ tISI = setISI; % tempo do estimulo na tela, entre  .3s e 3s
         
         time = GetSecs;
         
-        [keyIsDown, whenWasPressed, keyCode] = KbCheck;
-        
         firstFrame     = true;
         firstStimFrame = true;
         trialRun       = true;
         
         while trialRun
             % checks if any key was pressed
-            if GetSecs-whenWasPressed > .3 % but just after 300ms after the last press (to avoid "repetitions" of values on the matrix because of a long press in the button)
+            if GetSecs-whenWasPressed > .15 % but just after 300ms after the last press (to avoid "repetitions" of values on the matrix because of a long press in the button)
                 [keyIsDown, whenWasPressed, keyCode] = KbCheck;
             end
             if keyIsDown
@@ -162,6 +163,7 @@ tISI = setISI; % tempo do estimulo na tela, entre  .3s e 3s
                     Screen('Preference', 'SuppressAllWarnings', oldSupressAllWarnings);
                     sca;
                 end
+                keyIsDown = false;
             end
             
             if firstStimFrame
@@ -191,17 +193,6 @@ tISI = setISI; % tempo do estimulo na tela, entre  .3s e 3s
 %                 elseif (time - stimulusStartTime >= tStim) && (time - stimulusStartTime < tISI(ii))
 %                 [x, y] = meshgrid(-250:1:250, -250:1:250);
 %                 [s1, s2] = size(x);
-                    % verify if presented image was target or not
-                    if ii ~= 1
-                        % Avoid negative indexing
-                        if shuffledImageSampleIdx(ii) == shuffledImageSampleIdx(ii - 1)
-                            wasTarget = true;
-                        else
-                            wasTarget = false;
-                        end
-                    else
-                        wasTarget = false;
-                    end
                 else
                     % Displays a red or green fixation depending on whether the response is correct
                     if (nBackPress && wasTarget) || (~nBackPress && ~wasTarget)

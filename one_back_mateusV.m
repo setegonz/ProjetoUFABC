@@ -123,6 +123,8 @@ try
     tStim = .5; %500ms
     tISI = setISI; % tempo do estimulo na tela, entre  .3s e 3s
     
+    [keyIsDown, whenWasPressed, keyCode] = KbCheck;
+    
     for ii = 1:length(shuffledImageSampleIdx)
         
         % verify if presented image was target or not
@@ -138,7 +140,6 @@ try
         end
         
         % response time variables
-        whenWasPressed  = NaN;
         timeClockPress  = NaN;
         timeNbackPress  = NaN;
         timeOneMinPress = NaN;
@@ -147,15 +148,13 @@ try
         
         time = GetSecs;
         
-        [keyIsDown, whenWasPressed, keyCode] = KbCheck;
-        
         firstFrame     = true;
         firstStimFrame = true;
         trialRun       = true;
         
         while trialRun
             % checks if any key was pressed
-            if GetSecs-whenWasPressed > .3 % but just after 300s after the last press (to avoid "repetitions" of values on the matrix because of a long press in the button)
+            if GetSecs-whenWasPressed > .15 % but just after 300s after the last press (to avoid "repetitions" of values on the matrix because of a long press in the button)
                 [keyIsDown, whenWasPressed, keyCode] = KbCheck;
             end
             if keyIsDown
@@ -195,32 +194,56 @@ try
                     Screen('Preference', 'SuppressAllWarnings', oldSupressAllWarnings);
                     sca;
                 end
+                keyIsDown = false;
             end
             
             if firstStimFrame
                 
                 
                 Screen('DrawTexture', window, images(ii), [], [centeredRect], 0);
+                
+                if clockPress && ~startClock
+                    startClock = true;
+                    shownClock = GetSecs;
+                    DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
+                elseif clockPress && (time - shownClock < clockDuration)
+                    DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
+                else
+                    startClock = false;
+                    clockPress = false;
+                end
+                
+                if GetSecs-timeStart >= 10
+                    DrawFormattedText(window, 'You have to reset clock to 0', 'right', 'center',[0 0 0]);
+                end
+                
                 % Save the time the screen was flipped
                 stimulusStartTime = Screen('Flip', window);
                 time = GetSecs;
+%                 if startClock 
+%                     clockPress = false;
+%                     shownClock = 0;
+%                 end
                 
                 firstStimFrame = false;
             else
+                if clockPress && ~startClock
+                    startClock = true;
+                    shownClock = GetSecs;
+                    DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
+                elseif clockPress && (time - shownClock < clockDuration)
+                    DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
+                else
+                    startClock = false;
+                    clockPress = false;
+                end
+                
+                if GetSecs-timeStart >= 10
+                    DrawFormattedText(window, 'You have to reset clock to 0', 'right', 'center',[0 0 0]);
+                end
+                
                 if time - stimulusStartTime < tStim
                     Screen('DrawTexture', window, images(ii), [], [centeredRect], 0);
-                    
-                    if clockPress
-                        if ~startClock
-                            startClock = true;
-                            shownClock = GetSecs;
-                        end
-                        DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
-                    end    
-                    time = Screen('Flip', window);
-                    if startClock && (time - shownClock > clockDuration)
-                        clockPress = false;
-                    end
                 elseif (time - stimulusStartTime >= tStim) && (time - stimulusStartTime < tISI(ii))
                     [x, y] = meshgrid(-250:1:250, -250:1:250);
                     [s1, s2] = size(x);
@@ -231,17 +254,16 @@ try
                     
                     % Batch Draw all of the texures to screen
                     Screen('DrawTextures', window, noiseTexture, [], centeredRect);
-                    if clockPress
-                        if ~startClock
-                            startClock = true;
-                            shownClock = GetSecs;
-                        end
-                        DrawFormattedText(window, nowClock, 'right', 'center',[0 0 0]);
-                    end
-                    Screen('Flip', window);
                 else
                     trialRun = false;
                 end
+                
+                time = Screen('Flip', window);
+                
+%                 if startClock && (time - shownClock > clockDuration)
+%                     clockPress = false;
+%                     shownClock = 0;
+%                 end
             end
             time = GetSecs;
         end
