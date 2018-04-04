@@ -56,7 +56,7 @@ for ii = 1:length(shuffledImageSampleIdx)
 end
 
 % Display instructions for the task
-instructions = 'Nessas rodadas, você verá uma cruz de fixação verde se \n você está correto e uma cruz de fixação vermelha se você estiver incorreto. \n Esta é uma prática.\n Pressione espaço pra começar.\n';
+instructions = 'Apreta espaço se tem \n uma imagem doos vezes seguidas.\n Lembre-se de redefinir o relógio toda vez que um minuto de experiência passar. \n Esta é uma prática.\n espaço pra começar.\n';
 Screen('TextFont', window, 'Avenir');
 Screen('TextSize', window, 80);
 DrawFormattedText(window, instructions, 'center','center', 0, [], [], [], 1.5);
