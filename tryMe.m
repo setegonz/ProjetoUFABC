@@ -103,7 +103,7 @@ try
     %    'RT', 'Accuracy', 'Race', 'Gender'});
 
     T = cell2table(C, 'VariableNames', {'Trial', 'nBack', 'Valence', 'Image',...
-        'RT', 'Accuracy', 'Clock', 'dataOneMinPress'});
+        'imagePresentationTime','NoisePresentationTime','x','RT', 'Accuracy', 'Clock', 'dataOneMinPress'});
 
     % Name file using sub_num & write table
     file_name = sprintf('sub_%s.txt',subject);

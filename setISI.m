@@ -1,8 +1,8 @@
-function isi=setISI
+function isi=setISI(n)
 
 D = .5:.1:3;
 
-for i=1:100
+for i=1:n
 isi(i) = datasample(D,1);
 end
 
