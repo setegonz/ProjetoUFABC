@@ -17,7 +17,7 @@ try
     
     %% Choose stimuli sample for task
     
-    % Choose random sample of 7 images without replacement
+    % Choose random sample of 30 images without replacement
     [imageSample, imageSampleIdx] = datasample(sourceImages, 30, 'Replace', false);
     
     % There is not a target image for 1-back and 2-back, this is for sizing
@@ -102,11 +102,12 @@ try
     tStim = .5; %500ms
     tISI = setISI(length(shuffledImageSampleIdx)); % tempo do estimulo na tela, entre  .3s e 3s
     timeStart = GetSecs;
+    timeExperiment = GetSecs;
     
     [keyIsDown, whenWasPressed, keyCode] = KbCheck;
     
     for ii = 1:length(shuffledImageSampleIdx)
-        if (GetSecs - timeStart)/60>.5
+        if (GetSecs - timeExperiment)/60>.5
             Screen('Close');
         else
         % verify if presented image was target or not
@@ -238,9 +239,9 @@ try
                 if oneMinPressed && ~startFeedback
                     startFeedback = true;
                     shownFeedback = GetSecs;
-                    DrawFormattedText(window, 'Voce zerou o relogio', 'right', 'center',[0 0 0]);
+                    DrawFormattedText(window, 'Voce zerou \n o relogio', 'right', 'center',[0 0 0]);
                 elseif oneMinPressed && (time - shownFeedback <= clockDuration)
-                    DrawFormattedText(window, 'Voce zerou o relogio', 'right', 'center',[0 0 0]);
+                    DrawFormattedText(window, 'Voce zerou \n o relogio', 'right', 'center',[0 0 0]);
                 else
                     startFeedback = false;
                     oneMinPressed = false;

@@ -16,7 +16,7 @@ clockDuration = 1; % dura�ao do aparecimento do relogio
 
 %% Choose stimuli sample for task
 
-% Choose random sample of 7 images without replacement
+% Choose random sample of 30 images without replacement
 [imageSample, imageSampleIdx] = datasample(practiceSourceImages, 30, 'Replace', false);
 
 % There is not a target image for 1-back and 2-back, this is for sizing
@@ -39,6 +39,18 @@ targetIdx3 = randi(length(imageSampleIdx2));
 shuffledImageSampleIdx = [imageSampleIdx2(1:targetIdx3) imageSampleIdx2(targetIdx3)...
     imageSampleIdx2((targetIdx3 + 1):end)];
 
+% % create a vector of indexes (from 1 to 30) in random order
+% shuffledImageSampleIdx = []
+% for i=1:25
+%     shuffledImageSampleIdx = [shuffledImageSampleIdx randperm(30)];
+% end
+% % selects some indexes to repeat
+% idx = sort(randi(length(shuffledImageSampleIdx),1,floor(length(shuffledImageSampleIdx)/7)),'descend');
+% % insert repeated index in the vector
+% for i=1:length(idx)
+%     shuffledImageSampleIdx = [shuffledImageSampleIdx(1:idx(i)) shuffledImageSampleIdx(idx(i)) shuffledImageSampleIdx(idx(i)+1:end)];
+% end
+
 %% Main routine for one-back task
 
 % Calculate size and x-coordinate of target image. Used to position
@@ -50,9 +62,12 @@ targetImageY = (screenYpixels - s1)/ 2;
 
 % Store image textures in an array
 images = [];
+filenames = cell(1,30);
 for ii = 1:length(shuffledImageSampleIdx)
+    %     ii = 1:30
     image = imread(fullfile(pwd, 'stimuli', 'practice', practiceSourceImages(shuffledImageSampleIdx(ii)).name));
     images(ii) = Screen('MakeTexture', window, image);
+    filenames(ii) = {practiceSourceImages(ii).name};
 end
 
 % Display instructions for the task
@@ -90,11 +105,14 @@ dataClockPress  = []; % vector to save when clock key was pressed
 dataOneMinPress = []; % vector to save when one minute key was pressed
 tStim = .5; %500ms~
 tISI = setISI; % tempo do estimulo na tela, entre  .3s e 3s
+timeStart = GetSecs;
 
 [keyIsDown, whenWasPressed, keyCode] = KbCheck;
 
-    for ii = 1:length(shuffledImageSampleIdx)
-        
+for ii = 1:length(shuffledImageSampleIdx)
+    if (GetSecs - timeStart)/60>.5
+        Screen('Close');
+    else
         % verify if presented image was target or not
         if ii ~= 1
             % Avoid negative indexing
@@ -167,7 +185,7 @@ tISI = setISI; % tempo do estimulo na tela, entre  .3s e 3s
             end
             
             if firstStimFrame
-            
+                
                 Screen('DrawTexture', window, images(ii), [], [centeredRect], 0);
                 % Save the time the screen was flipped
                 stimulusStartTime = Screen('Flip', window);
@@ -190,9 +208,9 @@ tISI = setISI; % tempo do estimulo na tela, entre  .3s e 3s
                     if startClock && (time - shownClock > clockDuration)
                         clockPress = false;
                     end
-%                 elseif (time - stimulusStartTime >= tStim) && (time - stimulusStartTime < tISI(ii))
-%                 [x, y] = meshgrid(-250:1:250, -250:1:250);
-%                 [s1, s2] = size(x);
+                    %                 elseif (time - stimulusStartTime >= tStim) && (time - stimulusStartTime < tISI(ii))
+                    %                 [x, y] = meshgrid(-250:1:250, -250:1:250);
+                    %                 [s1, s2] = size(x);
                 else
                     % Displays a red or green fixation depending on whether the response is correct
                     if (nBackPress && wasTarget) || (~nBackPress && ~wasTarget)
@@ -212,4 +230,5 @@ tISI = setISI; % tempo do estimulo na tela, entre  .3s e 3s
             time = GetSecs;
         end
     end
+end
 Screen('Close');
