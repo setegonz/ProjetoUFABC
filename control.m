@@ -71,7 +71,7 @@ try
     end
     
     % Display instructions for the task
-    instructions = 'Pressione a barra de espaço quando ver \n uma repetição de imagem duas vezes seguidas.\n Lembre-se de zerar o relógio toda vez \n que um minuto de experimento passar. \n Pressione espaco para comecar.\n';
+    instructions = 'Pressione a barra de espaco quando ver \n uma repeticao de imagem duas vezes seguidas'; % \n Lembre-se de zerar o relógio toda vez \n que um minuto de experimento passar. \n Pressione espaco para comecar.\n';
     Screen('TextFont', window, 'Avenir');
     Screen('TextSize', window, 80);
     DrawFormattedText(window, instructions, 'center','center', 0, [], [], [], 1.5);

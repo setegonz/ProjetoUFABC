@@ -9,8 +9,8 @@ clearvars;
 h = pwd;
 
 % Get subject number from user
-% sub_num = input ('Subject number: ');
-sub_num = 1 %depois descomentar a linha de cima e apagar essa
+sub_num = input ('Subject number: ');
+condition_exp = input ('Condition: ');
 
 % Perform standard setup for Psychtoolbox
 PsychDefaultSetup(2);
@@ -76,7 +76,7 @@ ListenChar(2);
 
 % Set the number of runs. The script will run each condition this many
 % times.
-nruns = 2;
+nruns = 1;
 
 % Preallocate a cell array to collect data. There are 10 trials per run and
 % 6 conditions (6*10), which we can muliply by the number of runs. There
@@ -99,27 +99,29 @@ negativeSourceImages = dir(fullfile(pwd,'stimuli','negative','*.jpg')); %Negativ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% Show practice & run experiment based on subject number %%%
 %cd scripts;
-practice;
+% one_back_practiceV;
+stim = 0;
+one_back_practiceV
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% Transition to real experiment %%%%%%%%%%%%%%%%%%%%%%
-instructions = 'Vc ta pronta(o) pro experimento real? \n barra espa??adora.\n ';
-Screen('TextFont', window, 'Avenir');
-Screen('TextSize', window, 80);
-DrawFormattedText(window, instructions, 'center', 'center', 0, [], [], [], 1.5);
-Screen('Flip', window);
-
-[~, ~, ~] = KbWait([], 2);
+% instructions = 'Vc ta pronta(o) pro experimento real? \n barra espa??adora.\n ';
+% Screen('TextFont', window, 'Avenir');
+% Screen('TextSize', window, 80);
+% DrawFormattedText(window, instructions, 'center', 'center', 0, [], [], [], 1.5);
+% Screen('Flip', window);
+% 
+% [~, ~, ~] = KbWait([], 2);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% Run experiment %%%%%%%%%%%%%%%%%%%%%%%%%%%
 setCondition;
-cd(h)
+% cd(h)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% Put data into a table %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T = cell2table(C, 'VariableNames', {'Trial', 'nBack', 'Valence', 'Image',...
-    'RT', 'Accuracy', 'Clock'});
+        'imagePresentationTime','NoisePresentationTime','x','RT', 'Accuracy', 'Clock', 'dataOneMinPress'});
 
 % Name file using sub_num & write table
 file_name = sprintf('sub_%d.txt',sub_num);

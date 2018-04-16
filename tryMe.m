@@ -89,7 +89,7 @@ try
             trial = ri;
 %             one_back_practiceV
             one_back_mateusV
-            
+%             control
         end
     end
 

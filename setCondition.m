@@ -2,249 +2,75 @@
 
 %% Condition 1
 
-if mod(sub_num,6) == 0
-    %Move on to next task
-    stim = 0;
-    one_back_practice
-    for ri = 1:nruns
-        trial = ri;
-        one_back
-    end
-    stim = 1;
-    for ri = 1:nruns
-        trial = ri + nruns;
-        one_back
-    end
-    stim = 2;
-    for ri = 1:nruns
-        trial = ri + (2*nruns);
-        one_back
-    end
+if condition_exp == 0
 
-
-    %Transition once more
+    
     transition
-
-    % Final task
-    stim = 0;
-    two_back_practice
-    for ri = 1:nruns
-        trial = ri + (3*nruns);
-        two_back
-    end
-    stim = 1;
-    for ri = 1:nruns
-        trial = ri + (4*nruns);
-        two_back
-    end
-    stim = 2;
-    for ri = 1:nruns
-        trial = ri + (5*nruns);
-        two_back
-    end
-
+    
+    instructions = 'Vc ta pronta(o) pro experimento real? \n barra espa??adora.\n ';
+    Screen('TextFont', window, 'Avenir');
+    Screen('TextSize', window, 80);
+    DrawFormattedText(window, instructions, 'center', 'center', 0, [], [], [], 1.5);
+    Screen('Flip', window);
+    
+    [~, ~, ~] = KbWait([], 2);
+    
+    stim = 0
+    control
+    
+    transition
+    
+    stim = 0
+    one_back_mateusV
+    
+    
 
 %% Condition two
-elseif mod(sub_num,5) == 0
-    stim = 0;
-    one_back_practice
-    for ri = 1:nruns
-        trial = ri;
-        one_back
-    end
-    stim = 1;
-    for ri = 1:nruns
-        trial = ri + nruns;
-        one_back
-    end
-    stim = 2;
-    for ri = 1:nruns
-        trial = ri + 2*nruns;
-        one_back
-    end
-
-    %Transition screens to notify experimenter
+elseif condition_exp == 1
+    
+    
     transition
-
-    %Move on to next task
-    stim = 0;
-    two_back_practice
-    for ri = 1:nruns
-        trial = ri + (3*nruns);
-        two_back
-    end
-    stim = 1;
-    for ri = 1:nruns
-        trial = ri + (4*nruns);
-        two_back
-    end
-    stim = 2;
-    for ri = 1:nruns
-        trial = ri + (5*nruns);
-        two_back
-    end
-
-    %Transition once more
+    
+    
+    instructions = 'Vc ta pronta(o) pro experimento real? \n barra espa??adora.\n ';
+    Screen('TextFont', window, 'Avenir');
+    Screen('TextSize', window, 80);
+    DrawFormattedText(window, instructions, 'center', 'center', 0, [], [], [], 1.5);
+    Screen('Flip', window);
+    
+    [~, ~, ~] = KbWait([], 2);
+    
+    
+    stim = 0
+    control
+    
     transition
-
+    
+    stim = 1
+    one_back_mateusV
 
 
  %% Condition 3
-elseif mod(sub_num,4) == 0
-    stim = 0; %0 = intact, 1 = degraded
-    two_back_practice
-    for ri = 1:nruns
-        trial = ri;
-        two_back
-    end
-    stim = 1;
-    for ri = 1:nruns
-        trial = ri + nruns;
-        two_back
-    end
-    stim = 2;
-    for ri = 1:nruns
-        trial = ri + 2*nruns;
-        two_back
-    end
-
-    %Transition once more
+elseif condition_exp == 2
+    
     transition
-
-    % Final task
-    stim = 0;
-    one_back_practice
-    for ri = 1:nruns
-        trial = ri + (3*nruns);
-        one_back
-    end
-    stim = 1;
-    for ri = 1:nruns
-        trial = ri + (4*nruns);
-        one_back
-    end
-    stim = 2;
-    for ri = 1:nruns
-        trial = ri + (5*nruns);
-        one_back
-    end
-
-
-    %% Condition 4
-
-elseif mod(sub_num,3) == 0
-
-    %Move on to next task
-    stim = 1;
-    two_back_practice
-    for ri = 1:nruns
-        trial = ri;
-        two_back
-    end
-    stim = 0;
-    for ri = 1:nruns
-        trial = ri + nruns;
-        two_back
-    end
-    stim = 2;
-    for ri = 1:nruns
-        trial = ri + nruns;
-        two_back
-    end
-
-
-    %Transition once more
+    
+    
+    instructions = 'Vc ta pronta(o) pro experimento real? \n barra espa??adora.\n ';
+    Screen('TextFont', window, 'Avenir');
+    Screen('TextSize', window, 80);
+    DrawFormattedText(window, instructions, 'center', 'center', 0, [], [], [], 1.5);
+    Screen('Flip', window);
+    
+    [~, ~, ~] = KbWait([], 2);
+    
+    stim = 0
+    control
+    
     transition
-
-    % Final task
-    stim = 1;
-    one_back_practice
-    for ri = 1:nruns
-        trial = ri + (4*nruns);
-        one_back
-    end
-    stim = 0;
-    for ri = 1:nruns
-        trial = ri + (5*nruns);
-        one_back
-    end
-
-%% Condition 5
-elseif mod(sub_num,2) == 0
-    stim = 1;
-    one_back_practice
-    for ri = 1:nruns
-        trial = ri;
-        one_back
-    end
-    stim = 0;
-    for ri = 1:nruns
-        trial = ri + nruns;
-        one_back
-    end
-
-
-    %Transition once more
-    transition
-
-    % Final task
-    stim = 1;
-    two_back_practice
-    for ri = 1:nruns
-        trial = ri + (4*nruns);
-        two_back
-    end
-    stim = 0;
-    for ri = 1:nruns
-        trial = ri + (5*nruns);
-        two_back
-    end
-
-%% Condition 6
-else
-    stim = 1;
-    two_back_practice
-    for ri = 1:nruns
-        trial = ri;
-        two_back
-    end
-    stim = 0;
-    for ri = 1:nruns
-        trial = ri + nruns;
-        two_back
-    end
-
-    %Transition screens to notify experimenter
-    transition
-
-    %Move on to next task
-    stim = 1;
-    one_back_practice
-    for ri = 1:nruns
-        trial = ri + (2*nruns);
-        one_back
-    end
-    stim = 0;
-    for ri = 1:nruns
-        trial = ri + (3*nruns);
-        one_back
-    end
-
-    %Transition once more
-    transition
-
-    % Final task
-    stim = 1;
-    zero_back_practice
-    for ri = 1:nruns
-        trial = ri + (4*nruns);
-        zero_back
-    end
-    stim = 0;
-    for ri = 1:nruns
-        trial = ri + (5*nruns);
-        zero_back
-    end
+    
+    stim = 2
+    one_back_mateusV
 end
  % Final screen & Exit
  finalScreen

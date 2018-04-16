@@ -17,7 +17,7 @@ KbWait;
 % [~, ~, ~] = KbWait([], 2);
  
 
-intro = 'Vamos praticar a tarefa one-back.\n Nesta tarefa você debe pressionar espaço se tem \n uma imagem duas vezes seguidas.\n Lembre-se de zerar o relógio toda vez \n que um minuto de experimento passar. \n Pressione espaço para praticar.';
+intro = 'Vamos praticar a tarefa one-back.\n Nesta tarefa você debe pressionar espaço se tem \n uma imagem duas vezes seguidas'; %\n Lembre-se de zerar o relógio toda vez \n que um minuto de experimento passar. \n Pressione espaço para praticar.';
 Screen('TextFont', window, 'Avenir');
 Screen('TextSize', window, 80);
 DrawFormattedText(window, intro, 'center', 'center', 0, [], [], [], 1.5);
@@ -25,7 +25,7 @@ Screen('Flip', window);
 
 [~, ~, ~] = KbWait([], 2);
 stim = 0;
-one_back_practiceV
+one_back_practiceV;
 
 % intro = 'Agora vamos praticar a tarefa de duas costas.\n Pressione espaço para praticar.';
 % Screen('TextFont', window, 'Avenir');
