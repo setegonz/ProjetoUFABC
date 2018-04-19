@@ -73,7 +73,7 @@ try
     % Display instructions for the task
     instructions = 'Pressione a barra de espaco quando ver \n uma repeticao de imagem duas vezes seguidas'; % \n Lembre-se de zerar o relógio toda vez \n que um minuto de experimento passar. \n Pressione espaco para comecar.\n';
     Screen('TextFont', window, 'Avenir');
-    Screen('TextSize', window, 80);
+    Screen('TextSize', window, 50);
     DrawFormattedText(window, instructions, 'center','center', 0, [], [], [], 1.5);
     Screen('Flip', window);
     % Wait until user presses a key
@@ -107,7 +107,7 @@ try
     [keyIsDown, whenWasPressed, keyCode] = KbCheck;
     
     for ii = 1:length(shuffledImageSampleIdx)
-        if (GetSecs - timeExperiment)/60>.5
+        if (GetSecs - timeExperiment)/60>5
             Screen('Close');
         else
         % verify if presented image was target or not

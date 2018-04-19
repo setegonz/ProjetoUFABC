@@ -9,7 +9,7 @@ if condition_exp == 0
     
     instructions = 'Vc ta pronta(o) pro experimento real? \n barra espa??adora.\n ';
     Screen('TextFont', window, 'Avenir');
-    Screen('TextSize', window, 80);
+    Screen('TextSize', window, 50);
     DrawFormattedText(window, instructions, 'center', 'center', 0, [], [], [], 1.5);
     Screen('Flip', window);
     
@@ -34,7 +34,7 @@ elseif condition_exp == 1
     
     instructions = 'Vc ta pronta(o) pro experimento real? \n barra espa??adora.\n ';
     Screen('TextFont', window, 'Avenir');
-    Screen('TextSize', window, 80);
+    Screen('TextSize', window, 50);
     DrawFormattedText(window, instructions, 'center', 'center', 0, [], [], [], 1.5);
     Screen('Flip', window);
     
@@ -58,7 +58,7 @@ elseif condition_exp == 2
     
     instructions = 'Vc ta pronta(o) pro experimento real? \n barra espa??adora.\n ';
     Screen('TextFont', window, 'Avenir');
-    Screen('TextSize', window, 80);
+    Screen('TextSize', window, 50);
     DrawFormattedText(window, instructions, 'center', 'center', 0, [], [], [], 1.5);
     Screen('Flip', window);
     

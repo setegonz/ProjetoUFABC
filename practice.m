@@ -2,7 +2,7 @@
 
 intro = 'Bem-vindo ao experimento! \n Pressione espaço para continuar.';
 Screen('TextFont', window, 'Avenir');
-Screen('TextSize', window, 80);
+Screen('TextSize', window, 50);
 DrawFormattedText(window, intro, 'center', 'center', 0, [], [], [], 1.5);
 Screen('Flip', window);
 
