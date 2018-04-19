@@ -2,7 +2,7 @@
 
 intro = 'Bem-vindo ao experimento! \n Pressione espaço para continuar.';
 Screen('TextFont', window, 'Avenir');
-Screen('TextSize', window, 50);
+Screen('TextSize', window, 35);
 DrawFormattedText(window, intro, 'center', 'center', 0, [], [], [], 1.5);
 Screen('Flip', window);
 
@@ -19,7 +19,7 @@ KbWait;
 
 intro = 'Vamos praticar a tarefa one-back.\n Nesta tarefa você debe pressionar espaço se tem \n uma imagem duas vezes seguidas'; %\n Lembre-se de zerar o relógio toda vez \n que um minuto de experimento passar. \n Pressione espaço para praticar.';
 Screen('TextFont', window, 'Avenir');
-Screen('TextSize', window, 80);
+Screen('TextSize', window, 35);
 DrawFormattedText(window, intro, 'center', 'center', 0, [], [], [], 1.5);
 Screen('Flip', window);
 
