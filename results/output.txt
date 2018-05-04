@@ -1,0 +1,4 @@
+RT0,RT1,RT2,Acc0,Acc1,Acc2
+0.641,NaN,NaN,95.2,0,0
+NaN,NaN,0.87,0,0,75.1
+0.814,NaN,NaN,76.9,0,0
