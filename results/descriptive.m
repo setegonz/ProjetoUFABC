@@ -1,9 +1,9 @@
 %% Análisis 
 
-piloto1 = readtable('piloto1.txt'); %load data
+piloto1neutral = readtable('piloto1control.txt'); %load data
 piloto1 = readtable( 'piloto1.txt', opts);
-T = readtable('piloto1.txt','Delimiter', ',', 'Format', '%d %d %d %s %f %f %f %f %d %f %f %f %f %f');
-
+T = readtable('sub_AndreaNeutro','Delimiter', ',', 'Format', '%d %d %d %s %f %f %f %f %d %f %f %f %f %f');
+S = readtable('sub_AndreaNeg','Delimiter', ',', 'Format', '%d %d %d %s %f %f %f %f %d %f %f %f %f %f');
 
 RTs = piloto1(:,{'Trial','RT'});
 
@@ -12,22 +12,17 @@ plot(piloto1.Trial(:,:),piloto1.RT(:,:));
 histogram(~isnan(piloto1.RT));
 bar(piloto1.RT);
 bar(control.RT);
-
+D= sum(~isnan(S.dataOneMinPress_1)); %number of dataOneMinPress presses
 %%
 control = piloto1(1:170,:); %control task
 % controltrial = control(:,1);
-controltrial = 
+%controltrial = 
 % controlrt = (isnan(control(:,8)) = [];
 % controlrt = (~isnan(control(:,8));
 %%
 TBPM = piloto1(171:end,:); %TBPM
-
-
-% %% correct responses
-% correctoneback = control{:,9}==1;
-% 
-% %% incorret responses
-% incorrectoneback = control{:,9}==0;
+M = sum(~isnan(TBPM.dataOneMinPress_1)); %number of non nans
+Z = nnz(piloto1.Accuracy); %number of non zeros
 
 
 %number of clock checks
@@ -80,6 +75,44 @@ boxplot(control.RT)
 cohens(D);
 
 G(power); %software
+
+bar(T.RT0,'b')
+hold on;
+bar(T.RT1,'g');
+hold on;
+bar(T.RT2,'r')
+
+somenames={'control'; 'sujeito 1'; 'sujeito 2'; 'sujeito 3'};
+
+set(gca,'xticklabel',somenames);
+
+
+
+control = (161/170)*100;
+sujeito1 = (791/836)*100;
+sujeito2 = (751/815)*100;
+sujeito3 = (769/828)*100;
+sujeitos = [control sujeito1 sujeito2 sujeito3];
+bar(sujeitos)
+somenames={'control'; 'sujeito 1'; 'sujeito 2'; 'sujeito 3'};
+
+set(gca,'xticklabel',somenames);
+
+
+bar(control,'b')
+hold on;
+bar(sujeito1,'b');
+hold on;
+bar(sujeito2,'r');
+hold on;
+bar(sujeito3, 'b');
+
+somenames={'control'; 'sujeito 1'; 'sujeito 2'; 'sujeito 3'};
+
+set(gca,'xticklabel',somenames);
+
+
+
 
 
 

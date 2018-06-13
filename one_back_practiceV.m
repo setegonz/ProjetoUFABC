@@ -18,7 +18,7 @@ try
     %% Choose stimuli sample for task
 
     % Choose random sample of 30 images without replacement
-    [imageSample, imageSampleIdx] = datasample(sourceImages, 30, 'Replace', false);
+    [imageSample, imageSampleIdx] = datasample(sourceImages, 22, 'Replace', false);
 
     % There is not a target image for 1-back and 2-back, this is for sizing
     % purposes only.
@@ -33,8 +33,8 @@ try
 
     % create a vector of indexes (from 1 to 30) in random order
     shuffledImageSampleIdx = []
-    for i=1:25
-        shuffledImageSampleIdx = [shuffledImageSampleIdx randperm(30)];
+    for i=1:22
+        shuffledImageSampleIdx = [shuffledImageSampleIdx randperm(22)];
     end
     % selects some indexes to repeat
     idx = sort(randi(length(shuffledImageSampleIdx),1,floor(length(shuffledImageSampleIdx)/7)),'descend');
@@ -53,18 +53,18 @@ try
 
     % Store image textures in an array
     images = [];
-    filenames = cell(1,30);
-    for ii = 1:30
+    filenames = cell(1,22);
+    for ii = 1:22
         if stim == 0
-            imageNeutral = imread(fullfile(pwd, 'stimuli', 'neutral', sourceImages(ii).name));
+            imageNeutral = imread(fullfile(pwd, 'stimuli', 'Neutral', sourceImages(ii).name));
             images(ii) = Screen('MakeTexture', window, imageNeutral);
             filenames(ii) = {neutralSourceImages(ii).name};
         elseif stim == 1
-            imagePositive = imread(fullfile(pwd, 'stimuli','positive', sourceImages(ii).name));
+            imagePositive = imread(fullfile(pwd, 'stimuli','Positive', sourceImages(ii).name));
             images(ii) = Screen('MakeTexture', window, imagePositive);
             filenames(ii) = {positiveSourceImages(ii).name};
         elseif stim == 2
-            imageNegative = imread(fullfile(pwd, 'stimuli','negative', sourceImages(ii).name));
+            imageNegative = imread(fullfile(pwd, 'stimuli','Negative', sourceImages(ii).name));
             images(ii) = Screen('MakeTexture', window, imageNegative);
             filenames(ii) = {negativeSourceImages(ii).name};
         end
@@ -100,8 +100,7 @@ try
     dataClockPress  = []; % vector to save when clock key was pressed
     dataOneMinPress = []; % vector to save when one minute key was pressed
     tStim = .5; %500ms
-    % tISI = setISI(length(shuffledImageSampleIdx)); % tempo do estimulo na tela, entre  .3s e 3s
-    tISI = 1;
+    tISI = setISI(length(shuffledImageSampleIdx)); % tempo do estimulo na tela, entre  .5s e 3s
     timeStart = GetSecs;
     timeExperiment = GetSecs;
 
