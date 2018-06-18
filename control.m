@@ -18,7 +18,7 @@ try
     %% Choose stimuli sample for task
     
     % Choose random sample of 30 images without replacement
-    [imageSample, imageSampleIdx] = datasample(sourceImages, 30, 'Replace', false);
+    [imageSample, imageSampleIdx] = datasample(sourceImages, 22, 'Replace', false);
     
     % There is not a target image for 1-back and 2-back, this is for sizing
     % purposes only.
@@ -33,8 +33,8 @@ try
     
     % create a vector of indexes (from 1 to 30) in random order
     shuffledImageSampleIdx = []
-    for i=1:25
-        shuffledImageSampleIdx = [shuffledImageSampleIdx randperm(30)];
+    for i=1:22
+        shuffledImageSampleIdx = [shuffledImageSampleIdx randperm(22)];
     end
     % selects some indexes to repeat
     idx = sort(randi(length(shuffledImageSampleIdx),1,floor(length(shuffledImageSampleIdx)/7)),'descend');
@@ -53,8 +53,8 @@ try
     
     % Store image textures in an array
     images = [];
-    filenames = cell(1,30);
-    for ii = 1:30
+    filenames = cell(1,22);
+    for ii = 1:22
         if stim == 0
             imageNeutral = imread(fullfile(pwd, 'stimuli', 'neutral', sourceImages(ii).name));
             images(ii) = Screen('MakeTexture', window, imageNeutral);

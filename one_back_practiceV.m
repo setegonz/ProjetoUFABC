@@ -4,6 +4,7 @@ try
     neutralSourceImages = dir(fullfile(pwd,'stimuli','neutral','*.jpg'));    %Neutral
     positiveSourceImages = dir(fullfile(pwd,'stimuli','positive','*.jpg')); %Positive
     negativeSourceImages = dir(fullfile(pwd,'stimuli','negative','*.jpg')); %Negative
+    practiceSourceImages = dir(fullfile(pwd,'stimuli','practice','*.jpg')); %Practice
     clockDuration = 1; % dura�ao do aparecimento do relogio
 
     % Get names of task source images depending on stim type
@@ -13,6 +14,8 @@ try
         sourceImages = dir(fullfile(pwd,'stimuli', 'positive','*.jpg'));
     elseif stim == 2
         sourceImages = dir(fullfile(pwd,'stimuli', 'negative','*.jpg'));
+    elseif stim == 3
+        sourceImages = dir(fullfile(pwd,'stimuli', 'practice','*.jpg'))
     end
 
     %% Choose stimuli sample for task
@@ -31,13 +34,13 @@ try
         targetImage = imread(fullfile(pwd, 'stimuli', 'negative', imageSample(1).name));
     end
 
-    % create a vector of indexes (from 1 to 30) in random order
+    % create a vector of indexes (from 1 to 22) in random order
     shuffledImageSampleIdx = []
     for i=1:22
         shuffledImageSampleIdx = [shuffledImageSampleIdx randperm(22)];
     end
     % selects some indexes to repeat
-    idx = sort(randi(length(shuffledImageSampleIdx),1,floor(length(shuffledImageSampleIdx)/7)),'descend');
+    idx = sort(randi(length(shuffledImageSampleIdx),1,ceil(length(shuffledImageSampleIdx)/4)),'descend');
     % insert repeated index in the vector
     for i=1:length(idx)
         shuffledImageSampleIdx = [shuffledImageSampleIdx(1:idx(i)) shuffledImageSampleIdx(idx(i)) shuffledImageSampleIdx(idx(i)+1:end)];
@@ -99,8 +102,8 @@ try
 
     dataClockPress  = []; % vector to save when clock key was pressed
     dataOneMinPress = []; % vector to save when one minute key was pressed
-    tStim = .5; %500ms
-    tISI = setISI(length(shuffledImageSampleIdx)); % tempo do estimulo na tela, entre  .5s e 3s
+    tStim = 1; %ms
+    %tISI = setISI(length(shuffledImageSampleIdx)); % tempo do ISI na tela, entre  .5s e 3s
     timeStart = GetSecs;
     timeExperiment = GetSecs;
 
@@ -212,7 +215,7 @@ try
                 if time - stimulusStartTime <= tStim
                     Screen('DrawTexture', window, images(shuffledImageSampleIdx(ii)), [], [centeredRect], 0);
                     lastStimPresentation = true;
-                elseif (time - stimulusStartTime > tStim) && (time - stimulusStartTime <= 1) %tISI(ii))
+                elseif (time - stimulusStartTime > tStim) && (time - stimulusStartTime <= 2) %tISI(ii))
                     if lastStimPresentation
                         firstNoise = true;
                         lastStimPresentation = false;

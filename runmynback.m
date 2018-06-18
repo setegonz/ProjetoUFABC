@@ -100,7 +100,7 @@ negativeSourceImages = dir(fullfile(pwd,'stimuli','negative','*.jpg')); %Negativ
 %%%%%%%%% Show practice & run experiment based on subject number %%%
 %cd scripts;
 % one_back_practiceV;
-stim = 0;
+stim = 3;
 one_back_practiceV
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

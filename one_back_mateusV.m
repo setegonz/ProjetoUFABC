@@ -4,6 +4,7 @@ try
     neutralSourceImages = dir(fullfile(pwd,'stimuli','neutral','*.jpg'));    %Neutral
     positiveSourceImages = dir(fullfile(pwd,'stimuli','positive','*.jpg')); %Positive
     negativeSourceImages = dir(fullfile(pwd,'stimuli','negative','*.jpg')); %Negative
+    practiceSourceImages = dir(fullfile(pwd,'stimuli','practice','*.jpg'));
     clockDuration = 1; % dura�ao do aparecimento do relogio
     
     % Get names of task source images depending on stim type
