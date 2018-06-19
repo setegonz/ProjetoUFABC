@@ -20,7 +20,7 @@ try
 
     %% Choose stimuli sample for task
 
-    % Choose random sample of 30 images without replacement
+    % Choose random sample of 22 images without replacement
     [imageSample, imageSampleIdx] = datasample(sourceImages, 22, 'Replace', false);
 
     % There is not a target image for 1-back and 2-back, this is for sizing
@@ -32,6 +32,8 @@ try
         targetImage = imread(fullfile(pwd, 'stimuli', 'positive', imageSample(1).name));
     elseif stim == 2
         targetImage = imread(fullfile(pwd, 'stimuli', 'negative', imageSample(1).name));
+    elseif stim == 3
+        targetImage = imread(fullfile(pwd, 'stimuli', 'practice', imageSample(1).name));
     end
 
     % create a vector of indexes (from 1 to 22) in random order
@@ -70,6 +72,10 @@ try
             imageNegative = imread(fullfile(pwd, 'stimuli','Negative', sourceImages(ii).name));
             images(ii) = Screen('MakeTexture', window, imageNegative);
             filenames(ii) = {negativeSourceImages(ii).name};
+        elseif stim == 3
+            imagePractice = imread(fullfile(pwd, 'stimuli','Practice', sourceImages(ii).name));
+            images(ii) = Screen('MakeTexture', window, imagePractice);
+            filenames(ii) = {practiceSourceImages(ii).name};
         end
     end
 

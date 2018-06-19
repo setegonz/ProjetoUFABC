@@ -107,7 +107,7 @@ try
     [keyIsDown, whenWasPressed, keyCode] = KbCheck;
     
     for ii = 1:length(shuffledImageSampleIdx)
-        if (GetSecs - timeExperiment)/60>5
+        if (GetSecs - timeExperiment)/60>10
             Screen('Close');
         else
         % verify if presented image was target or not
