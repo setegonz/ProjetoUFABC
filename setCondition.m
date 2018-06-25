@@ -41,7 +41,7 @@ elseif condition_exp == 1
     [~, ~, ~] = KbWait([], 2);
     
     
-    stim = 0
+    stim = 1
     control
     
     transition
@@ -64,7 +64,7 @@ elseif condition_exp == 2
     
     [~, ~, ~] = KbWait([], 2);
     
-    stim = 0
+    stim = 2
     control
     
     transition

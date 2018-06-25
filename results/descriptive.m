@@ -13,6 +13,10 @@ histogram(~isnan(piloto1.RT));
 bar(piloto1.RT);
 bar(control.RT);
 D= sum(~isnan(S.dataOneMinPress_1)); %number of dataOneMinPress presses
+%%signal detection theory
+%of accuracy
+
+
 %%
 control = piloto1(1:170,:); %control task
 % controltrial = control(:,1);

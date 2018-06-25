@@ -1,6 +1,6 @@
 function isi=setISI(n)
 
-D = .5:.1:3;
+D = .7:.1:3;
 
 for i=1:n
 isi(i) = datasample(D,1);

@@ -100,7 +100,7 @@ try
     dataClockPress  = []; % vector to save when clock key was pressed
     dataOneMinPress = []; % vector to save when one minute key was pressed 
     tStim = .5; %500ms
-    tISI = setISI(length(shuffledImageSampleIdx)); % tempo do estimulo na tela, entre  .3s e 3s
+    tISI = setISI(length(shuffledImageSampleIdx)); % tempo do estimulo na tela, entre  .7s e 3s
     timeStart = GetSecs;
     timeExperiment = GetSecs;
     
