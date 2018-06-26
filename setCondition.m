@@ -16,11 +16,13 @@ if condition_exp == 0
     [~, ~, ~] = KbWait([], 2);
     
     stim = 0
+    experiment = 0
     control
     
     transition
     
     stim = 0
+    experiment = 1
     one_back_mateusV
     
     
@@ -42,11 +44,13 @@ elseif condition_exp == 1
     
     
     stim = 1
+    experiment = 0
     control
     
     transition
     
     stim = 1
+    experiment = 1
     one_back_mateusV
 
 
@@ -65,11 +69,13 @@ elseif condition_exp == 2
     [~, ~, ~] = KbWait([], 2);
     
     stim = 2
+    experiment = 0
     control
     
     transition
     
     stim = 2
+    experiment = 1
     one_back_mateusV
 end
  % Final screen & Exit

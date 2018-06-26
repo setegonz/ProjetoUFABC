@@ -72,7 +72,7 @@ try
     end
     
     % Display instructions for the task
-    instructions = 'Pressione a barra de espaço quando ver \n uma repetição de imagem duas vezes seguidas.\n Lembre-se de zerar o relógio toda vez \n que um minuto de experimento passar. \n Pressione espaco para comecar.\n';
+    instructions = 'siga as instrucoees do experimentador';
     Screen('TextFont', window, 'Avenir');
     Screen('TextSize', window, 35);
     DrawFormattedText(window, instructions, 'center','center', 0, [], [], [], 1.5);
@@ -271,8 +271,9 @@ try
         else
             C(mi,9) = {0};
         end
-        C(mi,10) = {dataClockPress}; %Clock Monitoring
-        C(mi,11) = {dataOneMinPress};
+        C(mi,10) = {experiment}; %experiment or control
+        C(mi,11) = {dataClockPress}; %Clock Monitoring
+        C(mi,12) = {dataOneMinPress};
         mi = mi + 1;
         dataClockPress  = [];
         dataOneMinPress = [];

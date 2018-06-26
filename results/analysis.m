@@ -18,12 +18,12 @@ nruns = 1;
 for ii = 1:length(file_list)
     
     %Set empty arrays to capture data 
-    RT0 = [];
-    RT1 = [];
-    RT2 = [];
-    Acc0 = 0;
-    Acc1 = 0;
-    Acc2 = 0;
+    RT0 = []; %Rt Neutral Valence
+    RT1 = []; %Rt Positive Valence
+    RT2 = []; %Rt Negative Valence
+    Acc0 = 0; %Accuracy Neutral Valence
+    Acc1 = 0; %Accuracy Positive Valence
+    Acc2 = 0; %Accuracy Negative Valence
     
 %     T = readtable(char(file_list(ii)),'Delimiter', ',', 'Format', '%d %d %d %s %f %f %f %f %d %f %f %f %f %f');
     T = readtable(char(file_list(ii)));

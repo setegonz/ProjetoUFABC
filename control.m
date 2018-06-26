@@ -270,8 +270,9 @@ try
         else
             C(mi,9) = {0};
         end
-        C(mi,10) = {dataClockPress}; %Clock Monitoring
-        C(mi,11) = {dataOneMinPress};
+        C(mi,10) = {experiment}; %experiment or control
+        C(mi,11) = {dataClockPress}; %Clock Monitoring
+        C(mi,12) = {dataOneMinPress};
         mi = mi + 1;
         dataClockPress  = [];
         dataOneMinPress = [];

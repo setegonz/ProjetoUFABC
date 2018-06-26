@@ -121,7 +121,7 @@ setCondition;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% Put data into a table %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 T = cell2table(C, 'VariableNames', {'Trial', 'nBack', 'Valence', 'Image',...
-        'imagePresentationTime','NoisePresentationTime','x','RT', 'Accuracy', 'Clock', 'dataOneMinPress'});
+        'imagePresentationTime','NoisePresentationTime','x','RT', 'Accuracy', 'experiment' 'Clock', 'dataOneMinPress'});
 
 % Name file using sub_num & write table
 file_name = sprintf('sub_%d.txt',sub_num);
