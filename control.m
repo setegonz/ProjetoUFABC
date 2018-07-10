@@ -31,7 +31,7 @@ try
         targetImage = imread(fullfile(pwd, 'stimuli', 'negative', imageSample(1).name));
     end
     
-    % create a vector of indexes (from 1 to 30) in random order
+    % create a vector of indexes (from 1 to 22) in random order
     shuffledImageSampleIdx = []
     for i=1:22
         shuffledImageSampleIdx = [shuffledImageSampleIdx randperm(22)];
@@ -99,7 +99,7 @@ try
 
     dataClockPress  = []; % vector to save when clock key was pressed
     dataOneMinPress = []; % vector to save when one minute key was pressed 
-    tStim = .5; %500ms
+    tStim = .6; %600ms
     tISI = setISI(length(shuffledImageSampleIdx)); % tempo do estimulo na tela, entre  .7s e 3s
     timeStart = GetSecs;
     timeExperiment = GetSecs;

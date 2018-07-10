@@ -87,7 +87,8 @@ try
     if task == 1
         for ri = 1:nruns
             trial = ri;
-            one_back_practiceV
+            experiment = 0;
+            one_back_mateusV
 %
 %             control
         end

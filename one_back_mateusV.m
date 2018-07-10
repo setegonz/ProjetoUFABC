@@ -34,7 +34,7 @@ try
     
     % create a vector of indexes (from 1 to 22) in random order
     shuffledImageSampleIdx = []
-    for i=1:22
+    for i=1:50 %Veces de repetición de la secuencia
         shuffledImageSampleIdx = [shuffledImageSampleIdx randperm(22)];
     end
     % selects some indexes to repeat
@@ -100,15 +100,15 @@ try
 
     dataClockPress  = []; % vector to save when clock key was pressed
     dataOneMinPress = []; % vector to save when one minute key was pressed 
-    tStim = .5; %500ms
-    tISI = setISI(length(shuffledImageSampleIdx)); % tempo do estimulo na tela, entre  .3s e 3s
+    tStim = .6; %600ms
+    tISI = setISI(length(shuffledImageSampleIdx)); % tempo do estimulo na tela
     timeStart = GetSecs;
     timeExperiment = GetSecs;
     
     [keyIsDown, whenWasPressed, keyCode] = KbCheck;
     
     for ii = 1:length(shuffledImageSampleIdx)
-        if (GetSecs - timeExperiment)/60>20
+        if (GetSecs - timeExperiment)/60>20 %stopping by 17.17
             Screen('Close');
         else
         % verify if presented image was target or not
