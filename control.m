@@ -212,7 +212,8 @@ try
                 if time - stimulusStartTime <= tStim
                     Screen('DrawTexture', window, images(shuffledImageSampleIdx(ii)), [], [centeredRect], 0);
                     lastStimPresentation = true;
-                elseif (time - stimulusStartTime > tStim) && (time - stimulusStartTime <= tISI(ii))
+                %elseif (time - stimulusStartTime > tStim) && (time - stimulusStartTime <= tISI(ii))
+                elseif (time - stimulusStartTime > tStim) && (time - stimulusStartTime <= tStim + tISI(ii))
                     if lastStimPresentation
                         firstNoise = true;
                         lastStimPresentation = false;

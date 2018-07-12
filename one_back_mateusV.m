@@ -108,7 +108,7 @@ try
     [keyIsDown, whenWasPressed, keyCode] = KbCheck;
     
     for ii = 1:length(shuffledImageSampleIdx)
-        if (GetSecs - timeExperiment)/60>20 %stopping by 17.17
+        if (GetSecs - timeExperiment)/60>20 
             Screen('Close');
         else
         % verify if presented image was target or not
@@ -213,7 +213,8 @@ try
                 if time - stimulusStartTime <= tStim
                     Screen('DrawTexture', window, images(shuffledImageSampleIdx(ii)), [], [centeredRect], 0);
                     lastStimPresentation = true;
-                elseif (time - stimulusStartTime > tStim) && (time - stimulusStartTime <= tISI(ii))
+                %elseif (time - stimulusStartTime > tStim) && (time - stimulusStartTime <= tISI(ii))
+                elseif (time - stimulusStartTime > tStim) && (time - stimulusStartTime <= tStim + tISI(ii))
                     if lastStimPresentation
                         firstNoise = true;
                         lastStimPresentation = false;
