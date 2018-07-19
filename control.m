@@ -265,15 +265,17 @@ try
         C(mi,5) = {stimulusStartTime - timeStart}; %image presentation time
         C(mi,6) = {firstNoisePresentation - timeStart}; %{stimulusStartTime - timeStart + tStim}; %noise presentation
         C(mi,7) = {endNoise - timeStart}; %{stimulusStartTime + tStim + tISI(ii) - timeStart}; %noise finalization
-        C(mi,8) = {timeNbackPress}; %response time for nBack
+        C(mi,8) = {firstNoisePresentation - stimulusStartTime}; %stim duration
+        C(mi,9) = {endNoise - firstNoisePresentation}; %noise duration       
+        C(mi,10) = {timeNbackPress}; %response time for nBack
         if (nBackPress && wasTarget) || (~nBackPress && ~wasTarget) %accuracy
-            C(mi,9) = {1};
+            C(mi,11) = {1};
         else
-            C(mi,9) = {0};
+            C(mi,11) = {0};
         end
-        C(mi,10) = {experiment}; %experiment or control
-        C(mi,11) = {dataClockPress}; %Clock Monitoring
-        C(mi,12) = {dataOneMinPress};
+        C(mi,12) = {experiment}; %experiment or control
+        C(mi,13) = {dataClockPress}; %Clock Monitoring
+        C(mi,14) = {dataOneMinPress};
         mi = mi + 1;
         dataClockPress  = [];
         dataOneMinPress = [];
