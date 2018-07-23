@@ -62,8 +62,8 @@ video.r
 %% KEYBOARD CONFIG
 KbName('UnifyKeyNames');
 nBackKey  = KbName('space');
-clockKey  =  KbName('1!');
-oneMinKey =  KbName('2@'); 
+clockKey  =  KbName('z');
+oneMinKey =  KbName('/?'); 
 escapeKey = KbName('ESCAPE');
 
 RestrictKeysForKbCheck([nBackKey,clockKey,oneMinKey,escapeKey]);
@@ -101,7 +101,8 @@ negativeSourceImages = dir(fullfile(pwd,'stimuli','negative','*.jpg')); %Negativ
 %cd scripts;
 % one_back_practiceV;
 stim = 3;
-one_back_practiceV
+one_back_practiceV;
+one_back_practiceTBPM;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% Transition to real experiment %%%%%%%%%%%%%%%%%%%%%%
