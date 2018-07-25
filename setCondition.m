@@ -21,6 +21,11 @@ if condition_exp == 0
     
     transition
     
+    stim = 3
+    one_back_practiceTBPM
+    
+    transition
+    
     stim = 0
     experiment = 1
     one_back_mateusV
@@ -49,6 +54,11 @@ elseif condition_exp == 1
     
     transition
     
+    stim = 3
+    one_back_practiceTBPM
+    
+    transition
+    
     stim = 1
     experiment = 1
     one_back_mateusV
@@ -71,6 +81,11 @@ elseif condition_exp == 2
     stim = 2
     experiment = 0
     control
+    
+    transition
+    
+    stim = 3
+    one_back_practiceTBPM
     
     transition
     

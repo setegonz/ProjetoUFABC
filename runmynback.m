@@ -102,7 +102,7 @@ negativeSourceImages = dir(fullfile(pwd,'stimuli','negative','*.jpg')); %Negativ
 % one_back_practiceV;
 stim = 3;
 one_back_practiceV;
-one_back_practiceTBPM;
+% one_back_practiceTBPM;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% Transition to real experiment %%%%%%%%%%%%%%%%%%%%%%

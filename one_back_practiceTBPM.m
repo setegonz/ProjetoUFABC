@@ -80,9 +80,9 @@ try
     end
 
     % Display instructions for the task
-    instructions = 'Pressione a barra de espaco quando ver \n uma repeticao de imagem duas vezes seguidas.\n Voce vera uma cruz verde se voce \n esta correto e uma cruz vermelha se voce estiver errado. \n Lembre-se de zerar o relógio toda vez \n que um minuto de experimento passar. \n Pressione espaco para comecar.'; % \n Pressione espaco para comecar.\n';
+    instructions = 'Pressione a barra de espaco quando a imagem \n  que esta na tela for a mesma que a imagem imediatamente anterior.\n Voce vera uma cruz verde se voce \n esta correto e uma cruz vermelha se voce estiver errado. \n Lembre-se de zerar o relógio toda vez \n que um minuto de experimento passar. \n Pressione espaco para comecar.'; % \n Pressione espaco para comecar.\n';
     Screen('TextFont', window, 'Avenir');
-    Screen('TextSize', window, 35);
+    Screen('TextSize', window, 30);
     DrawFormattedText(window, instructions, 'center','center', 0, [], [], [], 1.5);
     Screen('Flip', window);
     % Wait until user presses a key
