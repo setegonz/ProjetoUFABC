@@ -99,7 +99,9 @@ try
     centeredRect = CenterRectOnPointd(baseRect, xCenter, yCenter);
 
     dataClockPress  = []; % vector to save when clock key was pressed
-    dataOneMinPress = []; % vector to save when one minute key was pressed 
+    dataOneMinPress = []; % vector to save when one minute key was pressed
+    dataClockPressEXP  = [];
+    dataOneMinPressEXP = [];
     tStim = .6; %600ms
     tISI = setISI(length(shuffledImageSampleIdx)); % tempo do estimulo na tela
     timeStart = GetSecs;
@@ -108,7 +110,7 @@ try
     [keyIsDown, whenWasPressed, keyCode] = KbCheck;
     
     for ii = 1:length(shuffledImageSampleIdx)
-        if (GetSecs - timeExperiment)/60>20 
+        if (GetSecs - timeExperiment)/60>1 
             Screen('Close');
         else
         % verify if presented image was target or not
@@ -147,6 +149,7 @@ try
                 if keyCode(clockKey)
                     clockPress = true;
                     timeClockPress = whenWasPressed;
+                    clockexp = timeClockPress-timeExperiment
                     % calcula o tempo do relogio
                     clockTime        = timeClockPress - timeStart; % em segundos
                     clockTimeMinutes = floor(clockTime/60); % minutos
@@ -154,6 +157,9 @@ try
                     nowClock         = sprintf('%um%us', clockTimeMinutes, clockTimeSecs);
                     
                     dataClockPress = [dataClockPress clockTime];
+                    dataClockPressEXP = [dataClockPressEXP clockexp];
+                    
+                    clockexp = NaN;
                     clockTime = NaN;
                     keyIsDown = false;
                     
@@ -164,7 +170,10 @@ try
                     
                 elseif keyCode(oneMinKey)
                     timeOneMinPress = whenWasPressed-timeStart;
+                    oneminexp = timeOneMinPress-timeExperiment;
                     dataOneMinPress = [dataOneMinPress timeOneMinPress];
+                    dataOneMinPressEXP = [dataOneMinPressEXP oneminexp];
+                    oneminexp = NaN;
                     timeOneMinPress = NaN;
                     keyIsDown = false;
                     timeStart = GetSecs; %reset do relogio
@@ -276,7 +285,9 @@ try
         end
         C(mi,12) = {experiment}; %experiment or control
         C(mi,13) = {dataClockPress}; %Clock Monitoring
-        C(mi,14) = {dataOneMinPress};
+        C(mi,14) = {dataClockPressEXP};
+        C(mi,15) = {dataOneMinPress};
+        C(mi,16) = {dataOneMinPressEXP};
         mi = mi + 1;
         dataClockPress  = [];
         dataOneMinPress = [];
