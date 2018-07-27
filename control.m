@@ -4,7 +4,6 @@ try
     neutralSourceImages = dir(fullfile(pwd,'stimuli','neutral','*.jpg'));    %Neutral
     positiveSourceImages = dir(fullfile(pwd,'stimuli','positive','*.jpg')); %Positive
     negativeSourceImages = dir(fullfile(pwd,'stimuli','negative','*.jpg')); %Negative
-    practiceSourceImages = dir(fullfile(pwd,'stimuli','practice','*.jpg'));
     clockDuration = 1; % dura�ao do aparecimento do relogio
     
     % Get names of task source images depending on stim type
@@ -18,7 +17,7 @@ try
     
     %% Choose stimuli sample for task
     
-    % Choose random sample of 22 images without replacement
+    % Choose random sample of 30 images without replacement
     [imageSample, imageSampleIdx] = datasample(sourceImages, 22, 'Replace', false);
     
     % There is not a target image for 1-back and 2-back, this is for sizing
@@ -34,7 +33,7 @@ try
     
     % create a vector of indexes (from 1 to 22) in random order
     shuffledImageSampleIdx = []
-    for i=1:50 %Veces de repetición de la secuencia
+    for i=1:22
         shuffledImageSampleIdx = [shuffledImageSampleIdx randperm(22)];
     end
     % selects some indexes to repeat
@@ -72,7 +71,7 @@ try
     end
     
     % Display instructions for the task
-    instructions = 'Pressione a barra de espaco quando a imagem \n  que esta na tela for a mesma que a imagem imediatamente anterior';
+    instructions = 'Pressione a barra de espaco quando ver \n uma repeticao de imagem duas vezes seguidas'; % \n Lembre-se de zerar o relógio toda vez \n que um minuto de experimento passar. \n Pressione espaco para comecar.\n';
     Screen('TextFont', window, 'Avenir');
     Screen('TextSize', window, 35);
     DrawFormattedText(window, instructions, 'center','center', 0, [], [], [], 1.5);
@@ -99,18 +98,16 @@ try
     centeredRect = CenterRectOnPointd(baseRect, xCenter, yCenter);
 
     dataClockPress  = []; % vector to save when clock key was pressed
-    dataOneMinPress = []; % vector to save when one minute key was pressed
-    dataClockPressEXP  = [];
-    dataOneMinPressEXP = [];
+    dataOneMinPress = []; % vector to save when one minute key was pressed 
     tStim = .6; %600ms
-    tISI = setISI(length(shuffledImageSampleIdx)); % tempo do estimulo na tela
+    tISI = setISI(length(shuffledImageSampleIdx)); % tempo do estimulo na tela, entre  .7s e 3s
     timeStart = GetSecs;
     timeExperiment = GetSecs;
     
     [keyIsDown, whenWasPressed, keyCode] = KbCheck;
     
     for ii = 1:length(shuffledImageSampleIdx)
-        if (GetSecs - timeExperiment)/60>1 
+        if (GetSecs - timeExperiment)/60>10
             Screen('Close');
         else
         % verify if presented image was target or not
@@ -156,9 +153,6 @@ try
                     nowClock         = sprintf('%um%us', clockTimeMinutes, clockTimeSecs);
                     
                     dataClockPress = [dataClockPress clockTime];
-                    dataClockPressEXP = [dataClockPressEXP timeExperiment-timeClockPress];
-                    
-                    
                     clockTime = NaN;
                     keyIsDown = false;
                     
@@ -170,7 +164,6 @@ try
                 elseif keyCode(oneMinKey)
                     timeOneMinPress = whenWasPressed-timeStart;
                     dataOneMinPress = [dataOneMinPress timeOneMinPress];
-                    dataOneMinPressEXP = [dataOneMinPressEXP timeExperiment-timeOneMinPress];
                     timeOneMinPress = NaN;
                     keyIsDown = false;
                     timeStart = GetSecs; %reset do relogio
@@ -219,7 +212,7 @@ try
                 if time - stimulusStartTime <= tStim
                     Screen('DrawTexture', window, images(shuffledImageSampleIdx(ii)), [], [centeredRect], 0);
                     lastStimPresentation = true;
-                    %elseif (time - stimulusStartTime > tStim) && (time - stimulusStartTime <= tISI(ii))
+                %elseif (time - stimulusStartTime > tStim) && (time - stimulusStartTime <= tISI(ii))
                 elseif (time - stimulusStartTime > tStim) && (time - stimulusStartTime <= tStim + tISI(ii))
                     if lastStimPresentation
                         firstNoise = true;
@@ -270,8 +263,8 @@ try
         C(mi,3) = {stim};  %Valence
         C(mi,4) = filenames(shuffledImageSampleIdx(ii)); %image
         C(mi,5) = {stimulusStartTime - timeStart}; %image presentation time
-        C(mi,6) = {firstNoisePresentation - timeStart}; %noise presentation
-        C(mi,7) = {endNoise - timeStart}; %noise finalization
+        C(mi,6) = {firstNoisePresentation - timeStart}; %{stimulusStartTime - timeStart + tStim}; %noise presentation
+        C(mi,7) = {endNoise - timeStart}; %{stimulusStartTime + tStim + tISI(ii) - timeStart}; %noise finalization
         C(mi,8) = {firstNoisePresentation - stimulusStartTime}; %stim duration
         C(mi,9) = {endNoise - firstNoisePresentation}; %noise duration       
         C(mi,10) = {timeNbackPress}; %response time for nBack
@@ -282,9 +275,7 @@ try
         end
         C(mi,12) = {experiment}; %experiment or control
         C(mi,13) = {dataClockPress}; %Clock Monitoring
-        C(mi,14) = {dataClockPressEXP};
-        C(mi,15) = {dataOneMinPress};
-        C(mi,16) = {dataOneMinPressEXP};
+        C(mi,14) = {dataOneMinPress};
         mi = mi + 1;
         dataClockPress  = [];
         dataOneMinPress = [];
