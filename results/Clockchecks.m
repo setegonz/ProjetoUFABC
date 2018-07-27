@@ -8,6 +8,12 @@ file_list = {s.name};
 % for the 6 conditions.
 % C = cell(length(file_list),12);
 C = cell(length(file_list),1);
+
+% number of clock checks
+% moment of clock checks
+% number of clock reset
+% acuraccy of cock reset
+
 for ii = 1:length(file_list)
     
     %Set empty arrays to capture data
@@ -20,45 +26,36 @@ for ii = 1:length(file_list)
     
     T = readtable(char(file_list(ii)));
     
-    sum(~isnan(TBPM.dataOneMinPress_1))
-    
-    
     for ti = 1:size(T,1) %
         
         if T.nBack(ti) == 1 && T.Valence(ti) == 0 && ...
                 T.experiment(ti) == 1
-            % Add RT to matrix (we will later take mean)
-            CK0 = sum(~isnan(T.dataOneMinPress_1(ti)));
+            CK0 = sum(~isnan(T.Clock_1(ti)));
             
             
         elseif T.nBack(ti) == 1 && T.Valence(ti) == 1 && ...
                 T.experiment(ti) == 1
-            % Add RT to matrix (we will later take mean)
-            CK1 = sum(~isnan(T.dataOneMinPress_1(ti)));
+            CK1 = sum(~isnan(T.Clock_1(ti)));
             
             
         elseif T.nBack(ti) == 1 && T.Valence(ti) == 2 && ...
                 T.experiment(ti) == 1
-            % Add RT to matrix (we will later take mean)
-            CK2 = sum(~isnan(T.dataOneMinPress_1(ti)));
+            CK2 = sum(~isnan(T.Clock_1(ti)));
             
             
             
             
         elseif T.nBack(ti) == 1 && T.Valence(ti) == 0 && ...
                 T.experiment(ti) == 0
-            % Add RT to matrix (we will later take mean)
-            CK00 = sum(~isnan(T.dataOneMinPress_1(ti)));
+            CK00 = sum(~isnan(T.Clock_1(ti)));
             
         elseif T.nBack(ti) == 1 && T.Valence(ti) == 1 && ...
                 T.experiment(ti) == 0
-            % Add RT to matrix (we will later take mean)
-            CK01 = sum(~isnan(T.dataOneMinPress_1(ti)));
+            CK01 = sum(~isnan(T.Clock_1(ti)));
             
         elseif T.nBack(ti) == 1 && T.Valence(ti) == 2 && ...
                 T.experiment(ti) == 0
-            % Add RT to matrix (we will later take mean)
-            CK02 = sum(~isnan(T.dataOneMinPress_1(ti)));
+            CK02 = sum(~isnan(T.Clock_1(ti)));
         end
     end
     
